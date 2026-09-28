@@ -1,13 +1,21 @@
 import { FocusTimerViewModel, ResumeKind } from '../focus/viewmodels/FocusTimerViewModel';
+import { AvatarViewModel } from '../focus/viewmodels/AvatarViewModel';
+import { AvatarFileService } from '../focus/services/AvatarFileService';
 import { TimerPhase } from '../focus/models/FocusModels';
 import { HomeView } from '../focus/pages/HomeView';
 import { FocusTimerView } from '../focus/pages/FocusTimerView';
 import { RestView } from '../focus/pages/RestView';
+import { AvatarManagerView } from '../focus/pages/AvatarManagerView';
+import { AvatarCropView } from '../focus/pages/AvatarCropView';
 import {
+  AVATAR_LIMIT_HINT,
   DEFAULT_REST_MINUTES,
+  ROUTE_AVATAR_CROP,
+  ROUTE_AVATAR_MANAGER,
   ROUTE_FOCUS_TIMER,
   ROUTE_REST
 } from '../common/constants/FocusConstants';
+import { promptAction } from '@kit.ArkUI';
 
 /**
  * 应用入口页。
@@ -29,6 +37,12 @@ struct Index {
         },
         onResumeSession: (): void => {
           this.resumeSession();
+        },
+        onOpenAvatarManager: (): void => {
+          this.pathStack.pushPathByName(ROUTE_AVATAR_MANAGER, '');
+        },
+        onAddAvatar: (): void => {
+          this.startAddAvatar();
         }
       })
     }
@@ -42,6 +56,7 @@ struct Index {
   /** 页面首次创建：从持久化快照恢复上次未完成的专注（元服务被回收后重进） */
   aboutToAppear(): void {
     FocusTimerViewModel.getInstance().restore().catch((): void => {});
+    AvatarViewModel.getInstance().restore().catch((): void => {});
   }
 
   /** 页面重新显示时（含从后台回前台），用绝对时间戳校准剩余时间 */
@@ -90,8 +105,45 @@ struct Index {
             this.pathStack.pop();
           }
         })
+      } else if (name === ROUTE_AVATAR_MANAGER) {
+        AvatarManagerView({
+          onAddAvatar: (): void => {
+            this.startAddAvatar();
+          },
+          onBack: (): void => {
+            this.pathStack.pop();
+          }
+        })
+      } else if (name === ROUTE_AVATAR_CROP) {
+        AvatarCropView({
+          onCancelled: (): void => {
+            this.pathStack.pop();
+          },
+          onSaved: (): void => {
+            this.pathStack.pop();
+          }
+        })
       }
     }
     .hideTitleBar(true)
+  }
+
+  /**
+   * 发起新增人物：先唤起相册选择，选中后进入裁剪页。
+   * 达到数量上限时给出提示，不进入选择流程。
+   */
+  private startAddAvatar(): void {
+    const vm: AvatarViewModel = AvatarViewModel.getInstance();
+    if (vm.isFull()) {
+      promptAction.showToast({ message: AVATAR_LIMIT_HINT });
+      return;
+    }
+    AvatarFileService.pickPhoto().then((uri: string): void => {
+      if (uri.length === 0) {
+        return;
+      }
+      vm.pendingSourceUri = uri;
+      this.pathStack.pushPathByName(ROUTE_AVATAR_CROP, '');
+    }).catch((): void => {});
   }
 }

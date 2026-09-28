@@ -18,6 +18,9 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { FocusTimerViewModel } from '../focus/viewmodels/FocusTimerViewModel';
 import { FocusStateStore } from '../focus/services/FocusStateStore';
+import { AvatarStore } from '../focus/services/AvatarStore';
+import { AvatarFileService } from '../focus/services/AvatarFileService';
+import { AvatarViewModel } from '../focus/viewmodels/AvatarViewModel';
 
 const DOMAIN = 0x0000;
 
@@ -32,6 +35,15 @@ export default class EntryAbility extends UIAbility {
     // 初始化计时状态持久化，用于进程被回收后恢复上次未完成的专注
     FocusStateStore.init(this.context).catch((err: Error): void => {
       hilog.error(DOMAIN, 'testTag', 'Failed to init FocusStateStore. Cause: %{public}s', JSON.stringify(err));
+    });
+    // 初始化陪伴人物：沙箱文件服务 + 元数据持久化，并恢复人物列表
+    AvatarFileService.init(this.context);
+    AvatarStore.init(this.context).then((): void => {
+      AvatarViewModel.getInstance().restore().catch((err: Error): void => {
+        hilog.error(DOMAIN, 'testTag', 'Failed to restore avatars. Cause: %{public}s', JSON.stringify(err));
+      });
+    }).catch((err: Error): void => {
+      hilog.error(DOMAIN, 'testTag', 'Failed to init AvatarStore. Cause: %{public}s', JSON.stringify(err));
     });
   }
 

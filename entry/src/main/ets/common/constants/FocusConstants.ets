@@ -34,6 +34,52 @@ export const ROUTE_FOCUS_TIMER: string = 'FocusTimer';
 /** 路由名：休息页 */
 export const ROUTE_REST: string = 'Rest';
 
+/** 路由名：人物管理页（P4） */
+export const ROUTE_AVATAR_MANAGER: string = 'AvatarManager';
+
+/** 路由名：照片裁剪页（P5） */
+export const ROUTE_AVATAR_CROP: string = 'AvatarCrop';
+
+// ==================== 陪伴人物相关（M2） ====================
+
+/** 陪伴人物数量上限 */
+export const MAX_AVATAR_COUNT: number = 12;
+
+/** 人物名称长度上限（字符） */
+export const MAX_AVATAR_NAME_LENGTH: number = 10;
+
+/** 落盘照片文件大小上限（字节，500KB） */
+export const AVATAR_MAX_FILE_BYTES: number = 500 * 1024;
+
+/** 落盘照片长边像素上限 */
+export const AVATAR_MAX_LONG_EDGE: number = 1080;
+
+/** 沙箱头像目录名（相对 filesDir） */
+export const AVATAR_DIR_NAME: string = 'avatars';
+
+/** 头像编码格式（JPEG） */
+export const AVATAR_JPEG_FORMAT: string = 'image/jpeg';
+
+/** 方形取景框边长（vp） */
+export const AVATAR_CROP_FRAME_SIZE: number = 300;
+
+// ==================== 陪伴人物文案 ====================
+
+/** 人物管理页标题 */
+export const AVATAR_TITLE: string = '陪伴人物';
+
+/** 人物列表空态引导 */
+export const AVATAR_EMPTY_HINT: string = '还没有陪伴人物，点 + 添加一个吧';
+
+/** 达到数量上限提示 */
+export const AVATAR_LIMIT_HINT: string = '最多只能保存 12 个人物';
+
+/** 默认人物标记文案 */
+export const AVATAR_DEFAULT_TAG: string = '默认';
+
+/** 无人物时计时页取景框占位引导 */
+export const AVATAR_TIMER_PLACEHOLDER: string = '还没有陪伴人物，点这里添加一个吧';
+
 // ==================== 到点提醒文案 ====================
 // 说明：元服务不支持后台代理提醒（reminderAgentManager），M1 到点提醒由前台弹层负责，
 // 以下文案仍由 ReminderService 传递（当前为降级实现），便于后续接入系统提醒。

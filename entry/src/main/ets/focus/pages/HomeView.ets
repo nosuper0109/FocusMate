@@ -1,9 +1,14 @@
 import { FocusTimerViewModel, ResumeKind } from '../viewmodels/FocusTimerViewModel';
+import { AvatarViewModel } from '../viewmodels/AvatarViewModel';
 import { TimerPhase } from '../models/FocusModels';
+import { Avatar } from '../models/AvatarModels';
 import { formatDuration } from '../../common/utils/TimeUtils';
 import {
+  AVATAR_EMPTY_HINT,
+  AVATAR_TITLE,
   CARD_BG_COLOR,
   FOCUS_BG_COLOR,
+  FOCUS_SOFT_COLOR,
   FOCUS_THEME_COLOR,
   MAX_FOCUS_MINUTES,
   MIN_FOCUS_MINUTES,
@@ -29,12 +34,21 @@ export struct HomeView {
   /** 点击「恢复上次未完成」的回调 */
   @Event onResumeSession: () => void = (): void => {};
 
+  /** 人物 ViewModel 单例，人物选择区与计时页共享同一份状态 */
+  @Local avatarVm: AvatarViewModel = AvatarViewModel.getInstance();
+
+  /** 打开人物管理页的回调 */
+  @Event onOpenAvatarManager: () => void = (): void => {};
+
+  /** 发起新增人物的回调（相册选择 + 裁剪） */
+  @Event onAddAvatar: () => void = (): void => {};
+
   build() {
     Column() {
       this.headerSection()
       this.resumeBanner()
       this.durationSection()
-      this.placeholderSection()
+      this.avatarSection()
       Blank()
       this.startButton()
     }
@@ -179,18 +193,48 @@ export struct HomeView {
     .margin({ top: 24 })
   }
 
-  /** 后续里程碑占位说明区（M1 不实现人物 / 文案 / 统计） */
+  /** 人物选择区：横向滑动的头像列表 + 末尾「+」入口；无人物时展示空态引导 */
   @Builder
-  placeholderSection() {
+  avatarSection() {
     Column() {
-      Text('更多陪伴功能')
-        .fontSize(14)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(TEXT_SECONDARY_COLOR)
-      Text('陪伴人物、文案主题与专注统计将在后续版本上线')
-        .fontSize(13)
-        .fontColor(TEXT_SECONDARY_COLOR)
-        .margin({ top: 6 })
+      Row() {
+        Text(AVATAR_TITLE)
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(TEXT_PRIMARY_COLOR)
+
+        Blank()
+
+        Text('管理')
+          .fontSize(14)
+          .fontColor(FOCUS_THEME_COLOR)
+          .onClick(() => {
+            this.onOpenAvatarManager();
+          })
+      }
+      .width('100%')
+
+      if (this.avatarVm.avatars.length === 0) {
+        Text(AVATAR_EMPTY_HINT)
+          .fontSize(13)
+          .fontColor(TEXT_SECONDARY_COLOR)
+          .margin({ top: 10 })
+          .width('100%')
+      }
+
+      Scroll() {
+        Row({ space: 12 }) {
+          ForEach(this.avatarVm.avatars, (item: Avatar) => {
+            this.avatarChip(item)
+          }, (item: Avatar) => item.id)
+          this.addAvatarChip()
+        }
+        .padding({ top: 4, bottom: 4 })
+      }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(BarState.Off)
+      .width('100%')
+      .margin({ top: 12 })
     }
     .alignItems(HorizontalAlign.Start)
     .width('100%')
@@ -198,6 +242,69 @@ export struct HomeView {
     .backgroundColor(CARD_BG_COLOR)
     .borderRadius(20)
     .margin({ top: 16 })
+  }
+
+  /** 单个人物头像：当前使用人物带选中描边 */
+  @Builder
+  avatarChip(item: Avatar) {
+    Column() {
+      Image(this.avatarSrc(item))
+        .width(56)
+        .height(56)
+        .borderRadius(28)
+        .objectFit(ImageFit.Cover)
+        .backgroundColor('#EFF2F7')
+        .border({ width: this.avatarVm.currentId === item.id ? 3 : 0, color: FOCUS_THEME_COLOR })
+
+      Text(item.name)
+        .fontSize(12)
+        .fontColor(TEXT_SECONDARY_COLOR)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .width(64)
+        .textAlign(TextAlign.Center)
+        .margin({ top: 6 })
+    }
+    .width(64)
+    .onClick(() => {
+      this.selectAvatar(item.id);
+    })
+  }
+
+  /** 末尾「+」添加入口 */
+  @Builder
+  addAvatarChip() {
+    Column() {
+      Text('+')
+        .fontSize(28)
+        .fontColor(FOCUS_THEME_COLOR)
+        .width(56)
+        .height(56)
+        .borderRadius(28)
+        .backgroundColor(FOCUS_SOFT_COLOR)
+        .textAlign(TextAlign.Center)
+
+      Text('添加')
+        .fontSize(12)
+        .fontColor(TEXT_SECONDARY_COLOR)
+        .width(64)
+        .textAlign(TextAlign.Center)
+        .margin({ top: 6 })
+    }
+    .width(64)
+    .onClick(() => {
+      this.onAddAvatar();
+    })
+  }
+
+  /** 头像图片源：沙箱文件使用 file:// 前缀 */
+  private avatarSrc(item: Avatar): string {
+    return item.filePath.length > 0 ? `file://${item.filePath}` : '';
+  }
+
+  /** 选择当前使用人物 */
+  private selectAvatar(id: string): void {
+    this.avatarVm.setCurrent(id).catch((): void => {});
   }
 
   /** 底部「开始专注」大按钮 */

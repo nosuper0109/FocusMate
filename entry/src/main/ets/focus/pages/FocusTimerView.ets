@@ -1,7 +1,10 @@
 import { FocusTimerViewModel } from '../viewmodels/FocusTimerViewModel';
+import { AvatarViewModel } from '../viewmodels/AvatarViewModel';
 import { CountdownRing } from '../components/CountdownRing';
 import { TimerStatus } from '../models/FocusModels';
+import { Avatar } from '../models/AvatarModels';
 import {
+  AVATAR_TIMER_PLACEHOLDER,
   BORDER_LIGHT_COLOR,
   CARD_BG_COLOR,
   FOCUS_BG_COLOR,
@@ -21,6 +24,9 @@ import {
 export struct FocusTimerView {
   /** 计时 ViewModel 单例 */
   @Local vm: FocusTimerViewModel = FocusTimerViewModel.getInstance();
+
+  /** 人物 ViewModel 单例，取景框展示当前使用人物 */
+  @Local avatarVm: AvatarViewModel = AvatarViewModel.getInstance();
 
   /** 是否显示「提前结束」二次确认层 */
   @Local showStopConfirm: boolean = false;
@@ -64,13 +70,20 @@ export struct FocusTimerView {
     .height('100%')
   }
 
-  /** 顶部取景框占位区（M2 替换为陪伴人物） */
+  /** 顶部取景框：展示当前陪伴人物照片；无人物或文件丢失时降级为占位引导 */
   @Builder
   previewFrame() {
     Column() {
-      Text('陪伴人物将在下个版本上线')
-        .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
+      if (this.avatarVm.currentAvatar() !== null && this.avatarVm.currentFileAvailable()) {
+        Image(this.currentAvatarSrc())
+          .width('100%')
+          .height('100%')
+          .objectFit(ImageFit.Cover)
+      } else {
+        Text(AVATAR_TIMER_PLACEHOLDER)
+          .fontSize(14)
+          .fontColor(TEXT_SECONDARY_COLOR)
+      }
     }
     .width('100%')
     .height(150)
@@ -78,6 +91,13 @@ export struct FocusTimerView {
     .backgroundColor(CARD_BG_COLOR)
     .border({ width: 1, color: BORDER_LIGHT_COLOR, style: BorderStyle.Dashed })
     .justifyContent(FlexAlign.Center)
+    .clip(true)
+  }
+
+  /** 当前人物头像图片源 */
+  private currentAvatarSrc(): string {
+    const avatar: Avatar | null = this.avatarVm.currentAvatar();
+    return avatar !== null ? `file://${avatar.filePath}` : '';
   }
 
   /** 底部操作栏：暂停/继续 + 结束 */
