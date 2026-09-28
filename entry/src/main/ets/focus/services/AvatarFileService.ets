@@ -69,13 +69,21 @@ export class AvatarFileService {
    */
   static async getImageSize(sourceUri: string): Promise<IntSize> {
     const size: IntSize = new IntSize();
+    let file: fileIo.File | null = null;
     try {
-      const source: image.ImageSource = image.createImageSource(sourceUri);
+      // 相册 uri（file://media/...）不能直接用 createImageSource(uri) 解码，
+      // 需先 openSync 取 fd，否则 NAPI 层报 CreateImageSourceExec error。
+      file = fileIo.openSync(sourceUri, fileIo.OpenMode.READ_ONLY);
+      const source: image.ImageSource = image.createImageSource(file.fd);
       const info: image.ImageInfo = await source.getImageInfo();
       size.width = info.size.width;
       size.height = info.size.height;
     } catch (err) {
       hilog.error(LOG_DOMAIN, LOG_TAG, 'getImageSize failed: %{public}s', JSON.stringify(err));
+    } finally {
+      if (file !== null) {
+        fileIo.closeSync(file);
+      }
     }
     return size;
   }
@@ -178,9 +186,12 @@ export class AvatarFileService {
         desiredSize: { width: outW, height: outH }
       };
 
-      const source: image.ImageSource = image.createImageSource(sourceUri);
+      let file: fileIo.File | null = null;
       let pixelMap: image.PixelMap | null = null;
       try {
+        // 同上：相册 uri 需经 fd 打开后再解码
+        file = fileIo.openSync(sourceUri, fileIo.OpenMode.READ_ONLY);
+        const source: image.ImageSource = image.createImageSource(file.fd);
         pixelMap = await source.createPixelMap(decodeOptions);
         const packer: image.ImagePacker = image.createImagePacker();
         const packOptions: image.PackingOption = { format: AVATAR_JPEG_FORMAT, quality: 80 };
@@ -195,6 +206,9 @@ export class AvatarFileService {
       } finally {
         if (pixelMap !== null) {
           pixelMap.release();
+        }
+        if (file !== null) {
+          fileIo.closeSync(file);
         }
       }
 

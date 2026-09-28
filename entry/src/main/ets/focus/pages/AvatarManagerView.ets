@@ -137,11 +137,13 @@ export struct AvatarManagerView {
   @Builder
   avatarList() {
     List({ space: 12 }) {
+      // key 纳入 name 与默认标记：改名 / 切换默认后强制重建对应 ListItem。
+      // 若仅用 item.id 作 key，ForEach 会因 id 未变而复用旧项，导致名称与「默认」标签不刷新。
       ForEach(this.vm.avatars, (item: Avatar) => {
         ListItem() {
           this.avatarItem(item)
         }
-      }, (item: Avatar) => item.id)
+      }, (item: Avatar) => `${item.id}-${item.name}-${this.vm.defaultId === item.id ? '1' : '0'}`)
     }
     .width('100%')
     .layoutWeight(1)

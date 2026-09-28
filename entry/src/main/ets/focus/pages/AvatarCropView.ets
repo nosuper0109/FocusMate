@@ -51,6 +51,9 @@ export struct AvatarCropView {
   /** 是否正在保存 */
   @Local saving: boolean = false;
 
+  /** 保存/读取失败时的提示文案，非空时在命名层顶部展示 */
+  @Local saveError: string = '';
+
   /** 拖动起始位移 */
   private panStartX: number = 0;
   private panStartY: number = 0;
@@ -181,6 +184,13 @@ export struct AvatarCropView {
           .fontWeight(FontWeight.Bold)
           .fontColor(TEXT_PRIMARY_COLOR)
 
+        if (this.saveError.length > 0) {
+          Text(this.saveError)
+            .fontSize(13)
+            .fontColor('#E5533D')
+            .margin({ top: 10 })
+        }
+
         TextInput({ text: this.nameDraft })
           .maxLength(MAX_AVATAR_NAME_LENGTH)
           .height(48)
@@ -252,10 +262,12 @@ export struct AvatarCropView {
       return;
     }
     this.saving = true;
+    this.saveError = '';
     try {
       const size: IntSize = await AvatarFileService.getImageSize(uri);
       if (size.width <= 0 || size.height <= 0) {
         this.saving = false;
+        this.saveError = '图片读取失败，请返回重新选择';
         return;
       }
       const region: CropRegion = this.computeCropRegion(size);
@@ -267,6 +279,7 @@ export struct AvatarCropView {
       this.onSaved();
     } catch (err) {
       this.saving = false;
+      this.saveError = '保存失败，请重试';
       hilog.error(LOG_DOMAIN, LOG_TAG, 'save avatar failed: %{public}s', JSON.stringify(err));
     }
   }

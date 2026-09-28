@@ -224,9 +224,11 @@ export struct HomeView {
 
       Scroll() {
         Row({ space: 12 }) {
+          // key 纳入 name 与选中态：改名 / 切换当前人物后强制重建对应 chip。
+          // 若仅用 item.id 作 key，ForEach 会因 id 未变而复用旧项，导致名称与选中描边不刷新。
           ForEach(this.avatarVm.avatars, (item: Avatar) => {
             this.avatarChip(item)
-          }, (item: Avatar) => item.id)
+          }, (item: Avatar) => `${item.id}-${item.name}-${this.avatarVm.currentId === item.id ? '1' : '0'}`)
           this.addAvatarChip()
         }
         .padding({ top: 4, bottom: 4 })
