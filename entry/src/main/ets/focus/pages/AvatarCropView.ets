@@ -79,7 +79,8 @@ export struct AvatarCropView {
       }
       .width('100%')
       .height('100%')
-      .padding({ left: 24, right: 24, top: 32, bottom: 32 })
+      // top 56vp：为元服务右上角系统胶囊预留空间，避免页头控件被遮挡
+      .padding({ left: 24, right: 24, top: 56, bottom: 32 })
       .backgroundColor(FOCUS_BG_COLOR)
 
       if (this.showNaming) {
@@ -90,22 +91,27 @@ export struct AvatarCropView {
     .height('100%')
   }
 
-  /** 顶部：取消 + 标题 */
+  /** 顶部：取消 + 标题（标题居中，避开右上角系统胶囊） */
   @Builder
   headerSection() {
-    Row() {
-      Text('取消')
-        .fontSize(15)
-        .fontColor(TEXT_SECONDARY_COLOR)
-        .onClick(() => {
-          this.cancel();
-        })
-      Blank()
+    Stack() {
+      Row() {
+        Text('取消')
+          .fontSize(15)
+          .fontColor(TEXT_SECONDARY_COLOR)
+          .onClick(() => {
+            this.cancel();
+          })
+        Blank()
+      }
+      .width('100%')
+
       Text('裁剪照片')
         .fontSize(17)
         .fontWeight(FontWeight.Medium)
         .fontColor(TEXT_PRIMARY_COLOR)
-
+        .textAlign(TextAlign.Center)
+        .width('100%')
     }
     .width('100%')
   }

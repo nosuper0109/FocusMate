@@ -63,7 +63,8 @@ export struct AvatarManagerView {
       }
       .width('100%')
       .height('100%')
-      .padding({ left: 24, right: 24, top: 32, bottom: 32 })
+      // top 56vp：为元服务右上角系统胶囊（••• / ⊖）预留空间，避免页头「+」被遮挡
+      .padding({ left: 24, right: 24, top: 56, bottom: 32 })
       .backgroundColor(FOCUS_BG_COLOR)
 
       if (this.deleteTargetId.length > 0) {
@@ -102,8 +103,14 @@ export struct AvatarManagerView {
       Blank()
 
       Text('+')
-        .fontSize(26)
+        .fontSize(28)
+        .fontWeight(FontWeight.Medium)
         .fontColor(this.vm.isFull() ? TEXT_SECONDARY_COLOR : FOCUS_THEME_COLOR)
+        .textAlign(TextAlign.Center)
+        .width(44)
+        .height(44)
+        .borderRadius(22)
+        .backgroundColor(this.vm.isFull() ? CARD_BG_COLOR : FOCUS_SOFT_COLOR)
         .enabled(!this.vm.isFull())
         .opacity(this.vm.isFull() ? 0.4 : 1)
         .onClick(() => {
