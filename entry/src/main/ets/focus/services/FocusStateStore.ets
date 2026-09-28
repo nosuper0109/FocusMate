@@ -46,20 +46,39 @@ export class FocusSnapshot {
 export class FocusStateStore {
   /** 偏好存储句柄，null 表示尚未初始化 */
   private static store: preferences.Preferences | null = null;
+  /** 初始化 Promise 缓存：保证只初始化一次，并允许消费方等待初始化完成 */
+  private static initPromise: Promise<void> | null = null;
 
   /**
    * 初始化偏好存储（在 EntryAbility.onCreate 调用一次）。
+   * 幂等：重复调用返回同一个 Promise。
    * @param context 应用上下文
    */
-  static async init(context: common.Context): Promise<void> {
-    if (FocusStateStore.store !== null) {
-      return;
+  static init(context: common.Context): Promise<void> {
+    if (FocusStateStore.initPromise === null) {
+      FocusStateStore.initPromise = FocusStateStore.doInit(context);
     }
+    return FocusStateStore.initPromise;
+  }
+
+  /** 实际初始化逻辑 */
+  private static async doInit(context: common.Context): Promise<void> {
     try {
       FocusStateStore.store = await preferences.getPreferences(context, STORE_NAME);
       hilog.info(LOG_DOMAIN, LOG_TAG, 'FocusStateStore initialized');
     } catch (err) {
       hilog.error(LOG_DOMAIN, LOG_TAG, 'FocusStateStore init failed: %{public}s', JSON.stringify(err));
+    }
+  }
+
+  /**
+   * 等待初始化完成。
+   * 供 restore() 在读取快照前调用，避免「init 尚未完成就 load」的时序竞态。
+   * 若从未调用过 init，则立即返回。
+   */
+  static async waitReady(): Promise<void> {
+    if (FocusStateStore.initPromise !== null) {
+      await FocusStateStore.initPromise;
     }
   }
 

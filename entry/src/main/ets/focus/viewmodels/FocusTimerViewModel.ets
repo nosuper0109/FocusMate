@@ -169,6 +169,8 @@ export class FocusTimerViewModel {
    * - paused：恢复暂停态，首页提示「继续」。
    */
   async restore(): Promise<void> {
+    // 等待持久化存储初始化完成，避免与 EntryAbility.onCreate 中的异步 init 竞态
+    await FocusStateStore.waitReady();
     const snapshot: FocusSnapshot | null = await FocusStateStore.load();
     if (snapshot === null) {
       return;
