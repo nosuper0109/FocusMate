@@ -1,0 +1,97 @@
+import { FocusTimerViewModel, ResumeKind } from '../focus/viewmodels/FocusTimerViewModel';
+import { TimerPhase } from '../focus/models/FocusModels';
+import { HomeView } from '../focus/pages/HomeView';
+import { FocusTimerView } from '../focus/pages/FocusTimerView';
+import { RestView } from '../focus/pages/RestView';
+import {
+  DEFAULT_REST_MINUTES,
+  ROUTE_FOCUS_TIMER,
+  ROUTE_REST
+} from '../common/constants/FocusConstants';
+
+/**
+ * 应用入口页。
+ * Navigation 作为路由根容器，首页为入口页；计时页与休息页通过 NavPathStack 入栈展示。
+ * 计时状态统一存放在 FocusTimerViewModel 单例中，页面仅负责展示与转发事件。
+ */
+@Entry
+@ComponentV2
+struct Index {
+  /** 路由栈 */
+  private pathStack: NavPathStack = new NavPathStack();
+
+  build() {
+    Navigation(this.pathStack) {
+      HomeView({
+        onStartFocus: (minutes: number): void => {
+          FocusTimerViewModel.getInstance().startFocus(minutes);
+          this.pathStack.pushPathByName(ROUTE_FOCUS_TIMER, '');
+        },
+        onResumeSession: (): void => {
+          this.resumeSession();
+        }
+      })
+    }
+    .hideTitleBar(true)
+    .mode(NavigationMode.Stack)
+    .navDestination(this.navDestinationBuilder)
+    .width('100%')
+    .height('100%')
+  }
+
+  /** 页面首次创建：从持久化快照恢复上次未完成的专注（元服务被回收后重进） */
+  aboutToAppear(): void {
+    FocusTimerViewModel.getInstance().restore().catch((): void => {});
+  }
+
+  /** 页面重新显示时（含从后台回前台），用绝对时间戳校准剩余时间 */
+  onPageShow(): void {
+    FocusTimerViewModel.getInstance().resyncOnForeground();
+  }
+
+  /** 首页点击「恢复上次未完成」：跳转到对应的计时 / 休息页 */
+  private resumeSession(): void {
+    const vm: FocusTimerViewModel = FocusTimerViewModel.getInstance();
+    vm.resumeKind = ResumeKind.NONE;
+    this.pathStack.pushPathByName(vm.phase === TimerPhase.FOCUS ? ROUTE_FOCUS_TIMER : ROUTE_REST, '');
+  }
+
+  /**
+   * 路由表：把路由名映射到具体页面组件。
+   * 注意：Navigation 的每个子页面都必须以 NavDestination 作为根容器，
+   * 否则 push 后子页内容不会渲染（表现为空白页）。
+   */
+  @Builder
+  navDestinationBuilder(name: string) {
+    NavDestination() {
+      if (name === ROUTE_FOCUS_TIMER) {
+        FocusTimerView({
+          onGoRest: (): void => {
+            // 专注结束后进入 5 分钟休息
+            FocusTimerViewModel.getInstance().startRest(DEFAULT_REST_MINUTES);
+            this.pathStack.pushPathByName(ROUTE_REST, '');
+          },
+          onGoHome: (): void => {
+            // 结束专注：清理计时状态并回到首页
+            FocusTimerViewModel.getInstance().stopAndReset();
+            this.pathStack.clear();
+          }
+        })
+      } else if (name === ROUTE_REST) {
+        RestView({
+          onGoHome: (): void => {
+            // 结束休息：清理计时状态并回到首页
+            FocusTimerViewModel.getInstance().stopAndReset();
+            this.pathStack.clear();
+          },
+          onRestartFocus: (): void => {
+            // 再来一轮：用当前选择的时长重新开始专注，并退回计时页
+            FocusTimerViewModel.getInstance().startFocus(FocusTimerViewModel.getInstance().selectedMinutes);
+            this.pathStack.pop();
+          }
+        })
+      }
+    }
+    .hideTitleBar(true)
+  }
+}

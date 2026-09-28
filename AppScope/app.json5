@@ -1,0 +1,12 @@
+{
+  "app": {
+    "bundleName": "com.example.focusmate",
+    "vendor": "example",
+    "versionCode": 1000000,
+    "versionName": "1.0.0",
+    "icon": "$media:layered_image",
+    "label": "$string:app_name",
+    // 应用类型声明为元服务（原子服务），支持免安装即点即用
+    "bundleType": "atomicService"
+  }
+}
