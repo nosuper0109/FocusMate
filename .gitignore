@@ -11,3 +11,8 @@
 **/.test
 /.appanalyzer
 /.hvigor_home
+# 日报（个人工作日志，不入库）
+*日报.xls
+*日报.xlsx
+# 项目进度快照（本地维护，不入库）
+/PROGRESS.md

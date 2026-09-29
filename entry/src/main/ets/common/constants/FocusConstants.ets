@@ -40,6 +40,9 @@ export const ROUTE_AVATAR_MANAGER: string = 'AvatarManager';
 /** 路由名：照片裁剪页（P5） */
 export const ROUTE_AVATAR_CROP: string = 'AvatarCrop';
 
+/** 路由名：设置页（P6） */
+export const ROUTE_SETTINGS: string = 'Settings';
+
 // ==================== 陪伴人物相关（M2） ====================
 
 /** 陪伴人物数量上限 */
@@ -95,6 +98,79 @@ export const REST_REMINDER_TITLE: string = '休息结束啦';
 
 /** 休息到点提醒内容 */
 export const REST_REMINDER_CONTENT: string = '休息结束，回来继续专注吧';
+
+// ==================== 提醒与动效（M3） ====================
+
+/** 自定义文案长度上限（字符） */
+export const MAX_CUSTOM_TEXT_LENGTH: number = 30;
+
+/** 可选休息时长（分钟） */
+export const REST_MINUTES_OPTIONS: number[] = [3, 5, 10];
+
+/** 呼吸动画单程周期（毫秒） */
+export const BREATH_PERIOD_MS: number = 3000;
+
+/** 呼吸缩放上限 */
+export const BREATH_MAX_SCALE: number = 1.02;
+
+/** 微摆动单次过渡时长（毫秒） */
+export const SWAY_TRANSITION_MS: number = 1400;
+
+/** 微摆动角度上限（度） */
+export const SWAY_MAX_DEGREE: number = 0.5;
+
+/** 微摆动随机间隔下限（毫秒） */
+export const SWAY_INTERVAL_MIN_MS: number = 4000;
+
+/** 微摆动随机间隔上限（毫秒） */
+export const SWAY_INTERVAL_MAX_MS: number = 8000;
+
+/** 预警触发阈值（剩余秒数） */
+export const WARN_THRESHOLD_SECONDS: number = 60;
+
+/** 预警气泡展示时长（毫秒） */
+export const WARN_BUBBLE_DURATION_MS: number = 5000;
+
+/** 预警「探身」放大比例 */
+export const WARN_SCALE: number = 1.05;
+
+/** 结束弹跳单次时长（毫秒） */
+export const FINISH_BOUNCE_MS: number = 260;
+
+// ==================== 设置页文案（P6） ====================
+
+/** 设置页标题 */
+export const SETTINGS_TITLE: string = '设置';
+
+/** 设置页入口文案 */
+export const SETTINGS_ENTRY: string = '设置';
+
+/** 休息时长区标题 */
+export const SETTINGS_REST_TITLE: string = '休息时长';
+
+/** 提醒方式区标题 */
+export const SETTINGS_REMINDER_TITLE: string = '提醒方式';
+
+/** 文案主题区标题 */
+export const SETTINGS_THEME_TITLE: string = '文案主题';
+
+/** 自定义文案区标题 */
+export const SETTINGS_CUSTOM_TITLE: string = '自定义文案';
+
+/** 震动开关文案 */
+export const SETTINGS_VIBRATE_LABEL: string = '震动';
+
+/** 音效开关文案 */
+export const SETTINGS_SOUND_LABEL: string = '提示音';
+
+/** 自定义文案占位：预警 */
+export const SETTINGS_CUSTOM_WARN_HINT: string = '剩余 1 分钟的提醒（留空用默认）';
+
+/** 自定义文案占位：结束 */
+export const SETTINGS_CUSTOM_FINISH_HINT: string = '专注结束的提醒（留空用默认）';
+
+/** 自定义文案占位：休息结束 */
+export const SETTINGS_CUSTOM_REST_HINT: string = '休息结束的提醒（留空用默认）';
 
 // ==================== 日志相关 ====================
 

@@ -12,6 +12,13 @@
     "installationFree": true,
     "pages": "$profile:main_pages",
 
+    // 到点提醒的震动反馈（M3）
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.VIBRATE"
+      }
+    ],
+
     "abilities": [
       {
         "name": "EntryAbility",

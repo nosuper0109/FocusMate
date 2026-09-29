@@ -1,5 +1,6 @@
 import { FocusTimerViewModel, ResumeKind } from '../focus/viewmodels/FocusTimerViewModel';
 import { AvatarViewModel } from '../focus/viewmodels/AvatarViewModel';
+import { SettingsViewModel } from '../focus/viewmodels/SettingsViewModel';
 import { AvatarFileService } from '../focus/services/AvatarFileService';
 import { TimerPhase } from '../focus/models/FocusModels';
 import { HomeView } from '../focus/pages/HomeView';
@@ -7,13 +8,14 @@ import { FocusTimerView } from '../focus/pages/FocusTimerView';
 import { RestView } from '../focus/pages/RestView';
 import { AvatarManagerView } from '../focus/pages/AvatarManagerView';
 import { AvatarCropView } from '../focus/pages/AvatarCropView';
+import { SettingsView } from '../focus/pages/SettingsView';
 import {
   AVATAR_LIMIT_HINT,
-  DEFAULT_REST_MINUTES,
   ROUTE_AVATAR_CROP,
   ROUTE_AVATAR_MANAGER,
   ROUTE_FOCUS_TIMER,
-  ROUTE_REST
+  ROUTE_REST,
+  ROUTE_SETTINGS
 } from '../common/constants/FocusConstants';
 import { promptAction } from '@kit.ArkUI';
 
@@ -43,6 +45,9 @@ struct Index {
         },
         onAddAvatar: (): void => {
           this.startAddAvatar();
+        },
+        onOpenSettings: (): void => {
+          this.pathStack.pushPathByName(ROUTE_SETTINGS, '');
         }
       })
     }
@@ -57,6 +62,7 @@ struct Index {
   aboutToAppear(): void {
     FocusTimerViewModel.getInstance().restore().catch((): void => {});
     AvatarViewModel.getInstance().restore().catch((): void => {});
+    SettingsViewModel.getInstance().restore().catch((): void => {});
   }
 
   /** 页面重新显示时（含从后台回前台），用绝对时间戳校准剩余时间 */
@@ -82,8 +88,8 @@ struct Index {
       if (name === ROUTE_FOCUS_TIMER) {
         FocusTimerView({
           onGoRest: (): void => {
-            // 专注结束后进入 5 分钟休息
-            FocusTimerViewModel.getInstance().startRest(DEFAULT_REST_MINUTES);
+            // 专注结束后按设置里的休息时长进入休息
+            FocusTimerViewModel.getInstance().startRest(SettingsViewModel.getInstance().restMinutes);
             this.pathStack.pushPathByName(ROUTE_REST, '');
           },
           onGoHome: (): void => {
@@ -120,6 +126,12 @@ struct Index {
             this.pathStack.pop();
           },
           onSaved: (): void => {
+            this.pathStack.pop();
+          }
+        })
+      } else if (name === ROUTE_SETTINGS) {
+        SettingsView({
+          onBack: (): void => {
             this.pathStack.pop();
           }
         })

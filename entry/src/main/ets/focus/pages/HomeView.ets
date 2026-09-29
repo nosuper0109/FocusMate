@@ -14,6 +14,7 @@ import {
   MIN_FOCUS_MINUTES,
   PRESET_FOCUS_MINUTES,
   PROGRESS_TRACK_COLOR,
+  SETTINGS_ENTRY,
   TEXT_PRIMARY_COLOR,
   TEXT_SECONDARY_COLOR
 } from '../../common/constants/FocusConstants';
@@ -43,6 +44,9 @@ export struct HomeView {
   /** 发起新增人物的回调（相册选择 + 裁剪） */
   @Event onAddAvatar: () => void = (): void => {};
 
+  /** 打开设置页的回调（P6） */
+  @Event onOpenSettings: () => void = (): void => {};
+
   build() {
     Column() {
       this.headerSection()
@@ -54,25 +58,37 @@ export struct HomeView {
     }
     .width('100%')
     .height('100%')
-    .padding({ left: 24, right: 24, top: 32, bottom: 32 })
+    .padding({ left: 24, right: 24, top: 56, bottom: 32 })
     .backgroundColor(FOCUS_BG_COLOR)
   }
 
-  /** 顶部标题区 */
+  /** 顶部标题区：标题 + 设置入口 */
   @Builder
   headerSection() {
-    Column() {
-      Text('陪你专注')
-        .fontSize(30)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(TEXT_PRIMARY_COLOR)
-      Text('选一个时长，我陪你安静地专注一会儿')
-        .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
-        .margin({ top: 8 })
+    Row() {
+      Column() {
+        Text('陪你专注')
+          .fontSize(30)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(TEXT_PRIMARY_COLOR)
+        Text('选一个时长，我陪你安静地专注一会儿')
+          .fontSize(14)
+          .fontColor(TEXT_SECONDARY_COLOR)
+          .margin({ top: 8 })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+
+      Text(SETTINGS_ENTRY)
+        .fontSize(15)
+        .fontColor(FOCUS_THEME_COLOR)
+        .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+        .onClick(() => {
+          this.onOpenSettings();
+        })
     }
-    .alignItems(HorizontalAlign.Start)
     .width('100%')
+    .alignItems(VerticalAlign.Center)
   }
 
   /**
