@@ -12,6 +12,30 @@
       "name": "EntryAbility_label",
       "value": "陪你专注"
 
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "桌面服务卡片（专注状态）"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "陪你专注"
+    },
+    {
+      "name": "widget_2x2_name",
+      "value": "陪你专注 · 小卡"
+    },
+    {
+      "name": "widget_2x2_desc",
+      "value": "一眼看到当前专注状态与陪伴人物"
+    },
+    {
+      "name": "widget_2x4_name",
+      "value": "陪你专注 · 大卡"
+    },
+    {
+      "name": "widget_2x4_desc",
+      "value": "专注进度、今日次数与一键开始专注"
     }
   ]
 }

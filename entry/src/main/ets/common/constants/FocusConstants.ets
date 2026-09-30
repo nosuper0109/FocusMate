@@ -217,3 +217,37 @@ export const BORDER_LIGHT_COLOR: string = '#D8E0EC';
 
 /** 弹层遮罩色 */
 export const MASK_COLOR: string = 'rgba(0, 0, 0, 0.45)';
+// ==================== 服务卡片（M4） ====================
+
+/** 卡片状态文案：待开始 */
+export const CARD_STATUS_IDLE: string = '待开始';
+
+/** 卡片状态文案：专注中 */
+export const CARD_STATUS_FOCUS: string = '专注中';
+
+/** 卡片状态文案：休息中 */
+export const CARD_STATUS_REST: string = '休息中';
+
+/** 卡片状态文案：退后台提示（专注中，回到页面查看） */
+export const CARD_STATUS_AWAY: string = '专注中，回到页面查看';
+
+/** 卡片今日次数文案前缀 */
+export const CARD_TODAY_PREFIX: string = '今日已完成 ';
+
+/** 卡片今日次数文案后缀 */
+export const CARD_TODAY_SUFFIX: string = ' 次';
+
+/** 卡片快捷按钮文案（固定默认时长 25 分钟） */
+export const CARD_QUICK_START_LABEL: string = '开始 25min';
+
+/** 卡片快捷按钮 message 事件动作名 */
+export const CARD_QUICK_START_ACTION: string = 'startFocus25';
+
+/** 前台卡片刷新间隔（毫秒，分钟级；主动刷新不受系统定时刷新配额限制） */
+export const CARD_REFRESH_INTERVAL_MS: number = 60 * 1000;
+
+/** 卡片尺寸：2x2 */
+export const CARD_DIMENSION_2X2: string = '2*2';
+
+/** 卡片尺寸：2x4 */
+export const CARD_DIMENSION_2X4: string = '2*4';

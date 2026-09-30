@@ -2,6 +2,8 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { TimerPhase, TimerStatus } from '../models/FocusModels';
 import { ReminderService } from '../services/ReminderService';
 import { FocusStateStore, FocusSnapshot } from '../services/FocusStateStore';
+import { TodayCountStore } from '../services/TodayCountStore';
+import { FormRefreshService } from '../../form/services/FormRefreshService';
 
 import {
   DEFAULT_FOCUS_MINUTES,
@@ -105,6 +107,8 @@ export class FocusTimerViewModel {
     const durationSeconds: number = minutes * SECONDS_PER_MINUTE;
     this.beginCountdown(durationSeconds);
     this.registerReminder(durationSeconds);
+    // 状态变化后刷新桌面卡片
+    FormRefreshService.refreshAll(false);
   }
 
   /**
@@ -119,6 +123,8 @@ export class FocusTimerViewModel {
     const durationSeconds: number = minutes * SECONDS_PER_MINUTE;
     this.beginCountdown(durationSeconds);
     this.registerReminder(durationSeconds);
+    // 状态变化后刷新桌面卡片
+    FormRefreshService.refreshAll(false);
   }
 
   /** 暂停计时，同时取消系统提醒，避免暂停期间仍触发 */
@@ -132,6 +138,8 @@ export class FocusTimerViewModel {
     this.status = TimerStatus.PAUSED;
     this.cancelReminder();
     this.persist();
+    // 暂停时剩余时间冻结，刷新卡片
+    FormRefreshService.refreshAll(false);
   }
 
   /** 继续计时，按剩余时间重算结束时间戳并重新注册系统提醒 */
@@ -145,6 +153,8 @@ export class FocusTimerViewModel {
     this.startTicker();
     this.registerReminder(this.remainSeconds);
     this.persist();
+    // 继续计时后刷新卡片
+    FormRefreshService.refreshAll(false);
   }
 
   /** 提前结束本轮并复位（回到首页时调用） */
@@ -160,6 +170,8 @@ export class FocusTimerViewModel {
     FocusStateStore.clear().catch((err: Error): void => {
       hilog.error(LOG_DOMAIN, LOG_TAG, 'clear snapshot failed: %{public}s', JSON.stringify(err));
     });
+    // 复位后卡片回落为待开始态
+    FormRefreshService.refreshAll(false);
   }
 
   /**
@@ -293,6 +305,17 @@ export class FocusTimerViewModel {
     this.persist();
     hilog.info(LOG_DOMAIN, LOG_TAG, 'countdown finished, phase=%{public}s',
       this.phase === TimerPhase.FOCUS ? 'focus' : 'rest');
+    if (this.phase === TimerPhase.FOCUS) {
+      // 自然完成的专注计入「今日已完成次数」（休息结束不计入），随后刷新卡片
+      TodayCountStore.incrementFocusCompleted().then((): void => {
+        FormRefreshService.refreshAll(false);
+      }).catch((err: Error): void => {
+        hilog.error(LOG_DOMAIN, LOG_TAG, 'increment today count failed: %{public}s', JSON.stringify(err));
+        FormRefreshService.refreshAll(false);
+      });
+    } else {
+      FormRefreshService.refreshAll(false);
+    }
   }
 
   /**

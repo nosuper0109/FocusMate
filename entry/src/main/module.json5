@@ -40,6 +40,23 @@
           }
         ]
       }
+    ],
+
+    // 服务卡片（M4）：提供 2x2 与 2x4 两种尺寸的桌面动态卡片
+    "extensionAbilities": [
+      {
+        "name": "EntryFormAbility",
+        "srcEntry": "./ets/entryformability/EntryFormAbility.ets",
+        "label": "$string:EntryFormAbility_label",
+        "description": "$string:EntryFormAbility_desc",
+        "type": "form",
+        "metadata": [
+          {
+            "name": "ohos.extension.form",
+            "resource": "$profile:form_config"
+          }
+        ]
+      }
     ]
   }
 }

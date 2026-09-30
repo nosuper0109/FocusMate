@@ -2,6 +2,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Avatar, AvatarState } from '../models/AvatarModels';
 import { AvatarStore } from '../services/AvatarStore';
 import { AvatarFileService } from '../services/AvatarFileService';
+import { FormRefreshService } from '../../form/services/FormRefreshService';
 import { LOG_DOMAIN, LOG_TAG, MAX_AVATAR_COUNT, MAX_AVATAR_NAME_LENGTH } from '../../common/constants/FocusConstants';
 
 /**
@@ -238,5 +239,7 @@ export class AvatarViewModel {
     state.defaultId = this.defaultId;
     state.currentId = this.currentId;
     await AvatarStore.save(state);
+    // 陪伴人物变化后刷新桌面卡片头像
+    FormRefreshService.refreshAll(false);
   }
 }

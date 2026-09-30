@@ -2,6 +2,7 @@ import { FocusTimerViewModel, ResumeKind } from '../focus/viewmodels/FocusTimerV
 import { AvatarViewModel } from '../focus/viewmodels/AvatarViewModel';
 import { SettingsViewModel } from '../focus/viewmodels/SettingsViewModel';
 import { AvatarFileService } from '../focus/services/AvatarFileService';
+import { CardLaunchRouter } from '../form/services/CardLaunchRouter';
 import { TimerPhase } from '../focus/models/FocusModels';
 import { HomeView } from '../focus/pages/HomeView';
 import { FocusTimerView } from '../focus/pages/FocusTimerView';
@@ -29,6 +30,9 @@ import { promptAction } from '@kit.ArkUI';
 struct Index {
   /** 路由栈 */
   private pathStack: NavPathStack = new NavPathStack();
+
+  /** 卡片拉起落地页意图单例（M4） */
+  @Local cardRouter: CardLaunchRouter = CardLaunchRouter.getInstance();
 
   build() {
     Navigation(this.pathStack) {
@@ -63,6 +67,26 @@ struct Index {
     FocusTimerViewModel.getInstance().restore().catch((): void => {});
     AvatarViewModel.getInstance().restore().catch((): void => {});
     SettingsViewModel.getInstance().restore().catch((): void => {});
+    // 处理冷启动时由卡片 router 事件带来的落地页意图
+    this.applyCardRoute();
+  }
+
+  /** 卡片落地页意图变化（元服务已在前台时点击卡片） */
+  @Monitor('cardRouter.version')
+  onCardLaunchChanged(): void {
+    this.applyCardRoute();
+  }
+
+  /** 消费卡片落地页意图并跳转到对应页面 */
+  private applyCardRoute(): void {
+    const route: string = this.cardRouter.consume();
+    if (route === 'focus') {
+      this.pathStack.pushPathByName(ROUTE_FOCUS_TIMER, '');
+    } else if (route === 'rest') {
+      this.pathStack.pushPathByName(ROUTE_REST, '');
+    } else if (route === 'home') {
+      this.pathStack.clear();
+    }
   }
 
   /** 页面重新显示时（含从后台回前台），用绝对时间戳校准剩余时间 */
