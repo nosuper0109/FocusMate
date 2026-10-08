@@ -31,6 +31,8 @@ export class AvatarStore {
   private static store: preferences.Preferences | null = null;
   /** 初始化 Promise 缓存：保证只初始化一次，并允许消费方等待初始化完成 */
   private static initPromise: Promise<void> | null = null;
+  /** 应用上下文（用于跨进程按需重新加载） */
+  private static context: common.Context | null = null;
 
   /**
    * 初始化偏好存储（在 EntryAbility.onCreate 调用一次）。
@@ -38,6 +40,7 @@ export class AvatarStore {
    * @param context 应用上下文
    */
   static init(context: common.Context): Promise<void> {
+    AvatarStore.context = context;
     if (AvatarStore.initPromise === null) {
       AvatarStore.initPromise = AvatarStore.doInit(context);
     }
@@ -65,11 +68,37 @@ export class AvatarStore {
   }
 
   /**
+   * 重新从文件加载偏好存储，绕过进程内缓存。
+   *
+   * 卡片进程与元服务主进程各有独立的 preferences 内存缓存，读写前统一
+   * removePreferencesFromCacheSync 再重新 getPreferences，保证跨进程可见。
+   * @returns 最新偏好存储句柄；上下文不可用时返回 null
+   */
+  private static async freshStore(): Promise<preferences.Preferences | null> {
+    const context: common.Context | null = AvatarStore.context;
+    if (context === null) {
+      return null;
+    }
+    try {
+      preferences.removePreferencesFromCacheSync(context, STORE_NAME);
+    } catch (err) {
+      hilog.warn(LOG_DOMAIN, LOG_TAG, 'remove avatar cache failed: %{public}s', JSON.stringify(err));
+    }
+    try {
+      AvatarStore.store = await preferences.getPreferences(context, STORE_NAME);
+      return AvatarStore.store;
+    } catch (err) {
+      hilog.error(LOG_DOMAIN, LOG_TAG, 'reload AvatarStore failed: %{public}s', JSON.stringify(err));
+      return null;
+    }
+  }
+
+  /**
    * 读取人物集合状态；无数据时返回空状态。
    */
   static async load(): Promise<AvatarState> {
     const state: AvatarState = new AvatarState();
-    const store: preferences.Preferences | null = AvatarStore.store;
+    const store: preferences.Preferences | null = await AvatarStore.freshStore();
     if (store === null) {
       return state;
     }
@@ -102,7 +131,7 @@ export class AvatarStore {
    * @param state 待保存的人物集合状态
    */
   static async save(state: AvatarState): Promise<void> {
-    const store: preferences.Preferences | null = AvatarStore.store;
+    const store: preferences.Preferences | null = await AvatarStore.freshStore();
     if (store === null) {
       return;
     }

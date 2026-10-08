@@ -22,12 +22,15 @@ export class TodayCountStore {
   private static store: preferences.Preferences | null = null;
   /** 初始化 Promise 缓存：保证只初始化一次 */
   private static initPromise: Promise<void> | null = null;
+  /** 应用上下文（用于跨进程按需重新加载） */
+  private static context: common.Context | null = null;
 
   /**
    * 初始化偏好存储（幂等）。
    * @param context 应用上下文
    */
   static init(context: common.Context): Promise<void> {
+    TodayCountStore.context = context;
     if (TodayCountStore.initPromise === null) {
       TodayCountStore.initPromise = TodayCountStore.doInit(context);
     }
@@ -51,6 +54,32 @@ export class TodayCountStore {
     }
   }
 
+  /**
+   * 重新从文件加载偏好存储，绕过进程内缓存。
+   *
+   * 卡片进程与元服务主进程各有独立的 preferences 内存缓存，读写前统一
+   * removePreferencesFromCacheSync 再重新 getPreferences，保证跨进程可见。
+   * @returns 最新偏好存储句柄；上下文不可用时返回 null
+   */
+  private static async freshStore(): Promise<preferences.Preferences | null> {
+    const context: common.Context | null = TodayCountStore.context;
+    if (context === null) {
+      return null;
+    }
+    try {
+      preferences.removePreferencesFromCacheSync(context, STORE_NAME);
+    } catch (err) {
+      hilog.warn(LOG_DOMAIN, LOG_TAG, 'remove today cache failed: %{public}s', JSON.stringify(err));
+    }
+    try {
+      TodayCountStore.store = await preferences.getPreferences(context, STORE_NAME);
+      return TodayCountStore.store;
+    } catch (err) {
+      hilog.error(LOG_DOMAIN, LOG_TAG, 'reload TodayCountStore failed: %{public}s', JSON.stringify(err));
+      return null;
+    }
+  }
+
   /** 今日日期键（本地自然日） */
   static todayKey(): string {
     const now: Date = new Date();
@@ -61,7 +90,7 @@ export class TodayCountStore {
    * 读取今日已完成专注次数；跨日或未初始化时返回 0。
    */
   static async todayCount(): Promise<number> {
-    const store: preferences.Preferences | null = TodayCountStore.store;
+    const store: preferences.Preferences | null = await TodayCountStore.freshStore();
     if (store === null) {
       return 0;
     }
@@ -82,7 +111,7 @@ export class TodayCountStore {
    * @returns 更新后的今日次数
    */
   static async incrementFocusCompleted(): Promise<number> {
-    const store: preferences.Preferences | null = TodayCountStore.store;
+    const store: preferences.Preferences | null = await TodayCountStore.freshStore();
     if (store === null) {
       return 0;
     }

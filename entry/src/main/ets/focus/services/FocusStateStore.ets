@@ -48,6 +48,8 @@ export class FocusStateStore {
   private static store: preferences.Preferences | null = null;
   /** 初始化 Promise 缓存：保证只初始化一次，并允许消费方等待初始化完成 */
   private static initPromise: Promise<void> | null = null;
+  /** 应用上下文（用于跨进程按需重新加载） */
+  private static context: common.Context | null = null;
 
   /**
    * 初始化偏好存储（在 EntryAbility.onCreate 调用一次）。
@@ -55,6 +57,7 @@ export class FocusStateStore {
    * @param context 应用上下文
    */
   static init(context: common.Context): Promise<void> {
+    FocusStateStore.context = context;
     if (FocusStateStore.initPromise === null) {
       FocusStateStore.initPromise = FocusStateStore.doInit(context);
     }
@@ -83,11 +86,37 @@ export class FocusStateStore {
   }
 
   /**
+   * 重新从文件加载偏好存储，绕过进程内缓存。
+   *
+   * 卡片进程与元服务主进程各有独立的 preferences 内存缓存，任一方刚写入的数据另一方都读不到；
+   * 读写前统一 removePreferencesFromCacheSync 再重新 getPreferences，保证跨进程可见。
+   * @returns 最新偏好存储句柄；上下文不可用时返回 null
+   */
+  private static async freshStore(): Promise<preferences.Preferences | null> {
+    const context: common.Context | null = FocusStateStore.context;
+    if (context === null) {
+      return null;
+    }
+    try {
+      preferences.removePreferencesFromCacheSync(context, STORE_NAME);
+    } catch (err) {
+      hilog.warn(LOG_DOMAIN, LOG_TAG, 'remove focus state cache failed: %{public}s', JSON.stringify(err));
+    }
+    try {
+      FocusStateStore.store = await preferences.getPreferences(context, STORE_NAME);
+      return FocusStateStore.store;
+    } catch (err) {
+      hilog.error(LOG_DOMAIN, LOG_TAG, 'reload FocusStateStore failed: %{public}s', JSON.stringify(err));
+      return null;
+    }
+  }
+
+  /**
    * 写入快照并落盘。
    * @param snapshot 待保存的计时状态
    */
   static async save(snapshot: FocusSnapshot): Promise<void> {
-    const store: preferences.Preferences | null = FocusStateStore.store;
+    const store: preferences.Preferences | null = await FocusStateStore.freshStore();
     if (store === null) {
       return;
     }
@@ -108,7 +137,7 @@ export class FocusStateStore {
    * 读取快照；不存在或无效时返回 null。
    */
   static async load(): Promise<FocusSnapshot | null> {
-    const store: preferences.Preferences | null = FocusStateStore.store;
+    const store: preferences.Preferences | null = await FocusStateStore.freshStore();
     if (store === null) {
       return null;
     }
@@ -131,7 +160,7 @@ export class FocusStateStore {
    * 清除快照（本轮结束后复位时调用）。
    */
   static async clear(): Promise<void> {
-    const store: preferences.Preferences | null = FocusStateStore.store;
+    const store: preferences.Preferences | null = await FocusStateStore.freshStore();
     if (store === null) {
       return;
     }

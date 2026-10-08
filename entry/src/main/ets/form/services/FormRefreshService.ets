@@ -58,6 +58,8 @@ export class FormRefreshService {
    * @param background 元服务是否处于后台
    */
   static async doRefresh(context: common.Context, background: boolean): Promise<void> {
+    // 卡片进程可能未经 FormRefreshService.init，须先注入 context，否则 FormIdStore 无 context、loadIds 返回空
+    await FormIdStore.init(context);
     await FormDataService.prepare(context);
     const ids: string[] = await FormIdStore.loadIds();
     if (ids.length === 0) {

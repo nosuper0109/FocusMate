@@ -69,6 +69,17 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
   }
 
+  /**
+   * 热启动回调：元服务进程已在运行时，再次由卡片 router 事件拉起。
+   * 与冷启动一致，重新按共享快照恢复计时状态后落地对应页面。
+   * @param want 拉起参数（含 route）
+   * @param launchParam 启动参数
+   */
+  onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onNewWant');
+    this.handleCardLaunch(want);
+  }
+
   onWindowStageCreate(windowStage: window.WindowStage): void {
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
