@@ -23,12 +23,12 @@ struct WidgetCard2x2 {
       Text(this.timeText)
         .fontSize(24)
         .fontWeight(FontWeight.Bold)
-        .fontColor('#1A1A1A')
+        .fontColor($r('app.color.text_primary'))
         .margin({ top: 8 })
 
       Text(this.statusText)
         .fontSize(13)
-        .fontColor('#8A8A8E')
+        .fontColor($r('app.color.text_secondary'))
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .margin({ top: 4 })
@@ -37,7 +37,7 @@ struct WidgetCard2x2 {
     .height('100%')
     .justifyContent(FlexAlign.Center)
     .padding(12)
-    .backgroundColor('#FFFFFF')
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
     .onClick(() => {
       this.launchApp();
@@ -53,17 +53,17 @@ struct WidgetCard2x2 {
         .height(56)
         .borderRadius(28)
         .objectFit(ImageFit.Cover)
-        .backgroundColor('#EFF2F7')
+        .backgroundColor($r('app.color.chip_bg'))
     } else {
       Column() {
         Text('👤')
           .fontSize(26)
-          .fontColor('#9FB0CC')
+          .fontColor($r('app.color.placeholder_fg'))
       }
       .width(56)
       .height(56)
       .borderRadius(28)
-      .backgroundColor('#EFF4FF')
+      .backgroundColor($r('app.color.focus_soft'))
       .justifyContent(FlexAlign.Center)
     }
   }

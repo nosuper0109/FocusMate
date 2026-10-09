@@ -3,6 +3,74 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "focus_theme",
+      "value": "#3D7EFF"
+    },
+    {
+      "name": "rest_theme",
+      "value": "#FF9A4D"
+    },
+    {
+      "name": "focus_bg",
+      "value": "#F2F6FF"
+    },
+    {
+      "name": "focus_soft",
+      "value": "#EFF4FF"
+    },
+    {
+      "name": "rest_bg",
+      "value": "#FFF5EC"
+    },
+    {
+      "name": "rest_soft",
+      "value": "#FFF1E4"
+    },
+    {
+      "name": "text_primary",
+      "value": "#1A1A1A"
+    },
+    {
+      "name": "text_secondary",
+      "value": "#8A8A8E"
+    },
+    {
+      "name": "card_bg",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "progress_track",
+      "value": "#E4E9F2"
+    },
+    {
+      "name": "border_light",
+      "value": "#D8E0EC"
+    },
+    {
+      "name": "mask",
+      "value": "#73000000"
+    },
+    {
+      "name": "chip_bg",
+      "value": "#EFF2F7"
+    },
+    {
+      "name": "input_bg",
+      "value": "#F5F6F8"
+    },
+    {
+      "name": "danger",
+      "value": "#E5533D"
+    },
+    {
+      "name": "on_theme",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "placeholder_fg",
+      "value": "#9FB0CC"
     }
   ]
 }

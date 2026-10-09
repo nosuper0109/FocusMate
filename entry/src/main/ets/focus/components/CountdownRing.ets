@@ -1,9 +1,5 @@
 import { formatDuration } from '../../common/utils/TimeUtils';
-import {
-  PROGRESS_TRACK_COLOR,
-  TEXT_PRIMARY_COLOR,
-  TEXT_SECONDARY_COLOR
-} from '../../common/constants/FocusConstants';
+
 
 /**
  * 环形倒计时组件：外圈为按剩余比例显示的进度环，中心为大号 mm:ss 倒计时。
@@ -18,7 +14,7 @@ export struct CountdownRing {
   @Param totalSeconds: number = 0;
 
   /** 进度环主色 */
-  @Param ringColor: string = '#3D7EFF';
+  @Param ringColor: ResourceColor = $r('app.color.focus_theme');
 
   /** 环内状态文案（如「专注中」「休息中」「已暂停」） */
   @Param statusText: string = '';
@@ -41,17 +37,17 @@ export struct CountdownRing {
         .width(240)
         .height(240)
         .color(this.ringColor)
-        .backgroundColor(PROGRESS_TRACK_COLOR)
+        .backgroundColor($r('app.color.progress_track'))
         .style({ strokeWidth: 12 })
 
       Column() {
         Text(formatDuration(this.remainSeconds))
           .fontSize(52)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
         Text(this.statusText)
           .fontSize(14)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .margin({ top: 4 })
       }
     }

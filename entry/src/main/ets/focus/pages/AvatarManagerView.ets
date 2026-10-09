@@ -5,16 +5,8 @@ import {
   AVATAR_EMPTY_HINT,
   AVATAR_LIMIT_HINT,
   AVATAR_TITLE,
-  BORDER_LIGHT_COLOR,
-  CARD_BG_COLOR,
-  FOCUS_BG_COLOR,
-  FOCUS_SOFT_COLOR,
-  FOCUS_THEME_COLOR,
-  MASK_COLOR,
   MAX_AVATAR_COUNT,
-  MAX_AVATAR_NAME_LENGTH,
-  TEXT_PRIMARY_COLOR,
-  TEXT_SECONDARY_COLOR
+  MAX_AVATAR_NAME_LENGTH
 } from '../../common/constants/FocusConstants';
 
 /**
@@ -50,7 +42,7 @@ export struct AvatarManagerView {
         if (this.vm.isFull()) {
           Text(AVATAR_LIMIT_HINT)
             .fontSize(13)
-            .fontColor(TEXT_SECONDARY_COLOR)
+            .fontColor($r('app.color.text_secondary'))
             .width('100%')
             .margin({ top: 12 })
         }
@@ -65,7 +57,7 @@ export struct AvatarManagerView {
       .height('100%')
       // top 56vp：为元服务右上角系统胶囊（••• / ⊖）预留空间，避免页头「+」被遮挡
       .padding({ left: 24, right: 24, top: 56, bottom: 32 })
-      .backgroundColor(FOCUS_BG_COLOR)
+      .backgroundColor($r('app.color.focus_bg'))
 
       if (this.deleteTargetId.length > 0) {
         this.deleteConfirmLayer()
@@ -84,7 +76,7 @@ export struct AvatarManagerView {
     Row() {
       Text('＜')
         .fontSize(22)
-        .fontColor(TEXT_PRIMARY_COLOR)
+        .fontColor($r('app.color.text_primary'))
         .onClick(() => {
           this.onBack();
         })
@@ -92,12 +84,12 @@ export struct AvatarManagerView {
       Text(AVATAR_TITLE)
         .fontSize(20)
         .fontWeight(FontWeight.Bold)
-        .fontColor(TEXT_PRIMARY_COLOR)
+        .fontColor($r('app.color.text_primary'))
         .margin({ left: 12 })
 
       Text(`${this.vm.avatars.length}/${MAX_AVATAR_COUNT}`)
         .fontSize(13)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .margin({ left: 8 })
 
       Blank()
@@ -105,12 +97,12 @@ export struct AvatarManagerView {
       Text('+')
         .fontSize(28)
         .fontWeight(FontWeight.Medium)
-        .fontColor(this.vm.isFull() ? TEXT_SECONDARY_COLOR : FOCUS_THEME_COLOR)
+        .fontColor(this.vm.isFull() ? $r('app.color.text_secondary') : $r('app.color.focus_theme'))
         .textAlign(TextAlign.Center)
         .width(44)
         .height(44)
         .borderRadius(22)
-        .backgroundColor(this.vm.isFull() ? CARD_BG_COLOR : FOCUS_SOFT_COLOR)
+        .backgroundColor(this.vm.isFull() ? $r('app.color.card_bg') : $r('app.color.focus_soft'))
         .enabled(!this.vm.isFull())
         .opacity(this.vm.isFull() ? 0.4 : 1)
         .onClick(() => {
@@ -126,7 +118,7 @@ export struct AvatarManagerView {
     Column() {
       Text(AVATAR_EMPTY_HINT)
         .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
     }
     .width('100%')
     .layoutWeight(1)
@@ -161,20 +153,20 @@ export struct AvatarManagerView {
           .height(48)
           .borderRadius(24)
           .objectFit(ImageFit.Cover)
-          .backgroundColor('#EFF2F7')
+          .backgroundColor($r('app.color.chip_bg'))
 
         Column() {
           Text(item.name)
             .fontSize(16)
             .fontWeight(FontWeight.Medium)
-            .fontColor(TEXT_PRIMARY_COLOR)
+            .fontColor($r('app.color.text_primary'))
             .maxLines(1)
 
           if (this.vm.defaultId === item.id) {
             Text(AVATAR_DEFAULT_TAG)
               .fontSize(11)
-              .fontColor('#FFFFFF')
-              .backgroundColor(FOCUS_THEME_COLOR)
+              .fontColor($r('app.color.on_theme'))
+              .backgroundColor($r('app.color.focus_theme'))
               .borderRadius(8)
               .padding({ left: 8, right: 8, top: 2, bottom: 2 })
               .margin({ top: 6 })
@@ -189,14 +181,14 @@ export struct AvatarManagerView {
       Row() {
         Text('设为默认')
           .fontSize(14)
-          .fontColor(FOCUS_THEME_COLOR)
+          .fontColor($r('app.color.focus_theme'))
           .onClick(() => {
             this.setDefault(item.id);
           })
 
         Text('编辑名称')
           .fontSize(14)
-          .fontColor(FOCUS_THEME_COLOR)
+          .fontColor($r('app.color.focus_theme'))
           .margin({ left: 20 })
           .onClick(() => {
             this.openEdit(item);
@@ -204,7 +196,7 @@ export struct AvatarManagerView {
 
         Text('删除')
           .fontSize(14)
-          .fontColor('#E5533D')
+          .fontColor($r('app.color.danger'))
           .margin({ left: 20 })
           .onClick(() => {
             this.deleteTargetId = item.id;
@@ -215,7 +207,7 @@ export struct AvatarManagerView {
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
   }
 
@@ -227,10 +219,10 @@ export struct AvatarManagerView {
         Text('删除这个陪伴人物？')
           .fontSize(19)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
         Text('删除后 TA 的照片也会被一并删除')
           .fontSize(14)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .margin({ top: 8 })
 
         Row() {
@@ -238,8 +230,8 @@ export struct AvatarManagerView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor(FOCUS_THEME_COLOR)
-            .backgroundColor(FOCUS_SOFT_COLOR)
+            .fontColor($r('app.color.focus_theme'))
+            .backgroundColor($r('app.color.focus_soft'))
             .borderRadius(24)
             .onClick(() => {
               this.deleteTargetId = '';
@@ -249,8 +241,8 @@ export struct AvatarManagerView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor('#FFFFFF')
-            .backgroundColor(FOCUS_THEME_COLOR)
+            .fontColor($r('app.color.on_theme'))
+            .backgroundColor($r('app.color.focus_theme'))
             .borderRadius(24)
             .margin({ left: 12 })
             .onClick(() => {
@@ -262,12 +254,12 @@ export struct AvatarManagerView {
       }
       .width('82%')
       .padding(24)
-      .backgroundColor(CARD_BG_COLOR)
+      .backgroundColor($r('app.color.card_bg'))
       .borderRadius(20)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(MASK_COLOR)
+    .backgroundColor($r('app.color.mask'))
     .justifyContent(FlexAlign.Center)
   }
 
@@ -279,13 +271,13 @@ export struct AvatarManagerView {
         Text('编辑名称')
           .fontSize(19)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
 
         TextInput({ text: this.editingName })
           .maxLength(MAX_AVATAR_NAME_LENGTH)
           .height(48)
           .margin({ top: 18 })
-          .backgroundColor(FOCUS_BG_COLOR)
+          .backgroundColor($r('app.color.focus_bg'))
           .borderRadius(12)
           .onChange((value: string): void => {
             this.editingName = value;
@@ -296,8 +288,8 @@ export struct AvatarManagerView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor(FOCUS_THEME_COLOR)
-            .backgroundColor(FOCUS_SOFT_COLOR)
+            .fontColor($r('app.color.focus_theme'))
+            .backgroundColor($r('app.color.focus_soft'))
             .borderRadius(24)
             .onClick(() => {
               this.editingId = '';
@@ -307,8 +299,8 @@ export struct AvatarManagerView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor('#FFFFFF')
-            .backgroundColor(FOCUS_THEME_COLOR)
+            .fontColor($r('app.color.on_theme'))
+            .backgroundColor($r('app.color.focus_theme'))
             .borderRadius(24)
             .margin({ left: 12 })
             .enabled(this.editingName.trim().length > 0)
@@ -321,12 +313,12 @@ export struct AvatarManagerView {
       }
       .width('82%')
       .padding(24)
-      .backgroundColor(CARD_BG_COLOR)
+      .backgroundColor($r('app.color.card_bg'))
       .borderRadius(20)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(MASK_COLOR)
+    .backgroundColor($r('app.color.mask'))
     .justifyContent(FlexAlign.Center)
   }
 

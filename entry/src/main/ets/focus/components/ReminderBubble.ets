@@ -1,4 +1,4 @@
-import { TEXT_PRIMARY_COLOR } from '../../common/constants/FocusConstants';
+
 
 /**
  * 提醒气泡（M3）。
@@ -12,10 +12,10 @@ export struct ReminderBubble {
   @Param text: string = '';
 
   /** 气泡底色 */
-  @Param bubbleColor: string = '#FFFFFF';
+  @Param bubbleColor: ResourceColor = $r('app.color.card_bg');
 
   /** 文字颜色 */
-  @Param textColor: string = TEXT_PRIMARY_COLOR;
+  @Param textColor: ResourceColor = $r('app.color.text_primary');
 
   build() {
     Column() {

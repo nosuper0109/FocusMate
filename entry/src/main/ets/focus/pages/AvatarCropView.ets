@@ -4,18 +4,9 @@ import { AvatarFileService } from '../services/AvatarFileService';
 import { CropRegion, IntSize } from '../models/AvatarModels';
 import {
   AVATAR_CROP_FRAME_SIZE,
-
-  BORDER_LIGHT_COLOR,
-  CARD_BG_COLOR,
-  FOCUS_BG_COLOR,
-  FOCUS_SOFT_COLOR,
-  FOCUS_THEME_COLOR,
   LOG_DOMAIN,
   LOG_TAG,
-  MASK_COLOR,
-  MAX_AVATAR_NAME_LENGTH,
-  TEXT_PRIMARY_COLOR,
-  TEXT_SECONDARY_COLOR
+  MAX_AVATAR_NAME_LENGTH
 } from '../../common/constants/FocusConstants';
 
 /** 取景框最小缩放倍数 */
@@ -75,7 +66,7 @@ export struct AvatarCropView {
         this.cropFrame()
         Text('拖动或双指缩放调整构图')
           .fontSize(13)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .margin({ top: 16 })
         Blank()
         this.confirmButton()
@@ -84,7 +75,7 @@ export struct AvatarCropView {
       .height('100%')
       // top 56vp：为元服务右上角系统胶囊预留空间，避免页头控件被遮挡
       .padding({ left: 24, right: 24, top: 56, bottom: 32 })
-      .backgroundColor(FOCUS_BG_COLOR)
+      .backgroundColor($r('app.color.focus_bg'))
 
       if (this.showNaming) {
         this.namingLayer()
@@ -101,7 +92,7 @@ export struct AvatarCropView {
       Row() {
         Text('取消')
           .fontSize(15)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .onClick(() => {
             this.cancel();
           })
@@ -112,7 +103,7 @@ export struct AvatarCropView {
       Text('裁剪照片')
         .fontSize(17)
         .fontWeight(FontWeight.Medium)
-        .fontColor(TEXT_PRIMARY_COLOR)
+        .fontColor($r('app.color.text_primary'))
         .textAlign(TextAlign.Center)
         .width('100%')
     }
@@ -132,9 +123,9 @@ export struct AvatarCropView {
     }
     .width(AVATAR_CROP_FRAME_SIZE)
     .height(AVATAR_CROP_FRAME_SIZE)
-    .backgroundColor('#EFF2F7')
+    .backgroundColor($r('app.color.chip_bg'))
     .clip(true)
-    .border({ width: 1, color: BORDER_LIGHT_COLOR, style: BorderStyle.Dashed })
+    .border({ width: 1, color: $r('app.color.border_light'), style: BorderStyle.Dashed })
     .gesture(
       GestureGroup(GestureMode.Parallel,
         PanGesture({ fingers: 1 })
@@ -165,8 +156,8 @@ export struct AvatarCropView {
       .width('100%')
       .height(56)
       .fontSize(18)
-      .fontColor('#FFFFFF')
-      .backgroundColor(FOCUS_THEME_COLOR)
+      .fontColor($r('app.color.on_theme'))
+      .backgroundColor($r('app.color.focus_theme'))
       .borderRadius(28)
       .enabled(!this.saving)
       .onClick(() => {
@@ -182,12 +173,12 @@ export struct AvatarCropView {
         Text('给 TA 起个名字')
           .fontSize(19)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
 
         if (this.saveError.length > 0) {
           Text(this.saveError)
             .fontSize(13)
-            .fontColor('#E5533D')
+            .fontColor($r('app.color.danger'))
             .margin({ top: 10 })
         }
 
@@ -195,7 +186,7 @@ export struct AvatarCropView {
           .maxLength(MAX_AVATAR_NAME_LENGTH)
           .height(48)
           .margin({ top: 18 })
-          .backgroundColor(FOCUS_BG_COLOR)
+          .backgroundColor($r('app.color.focus_bg'))
           .borderRadius(12)
           .onChange((value: string): void => {
             this.nameDraft = value;
@@ -206,8 +197,8 @@ export struct AvatarCropView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor(FOCUS_THEME_COLOR)
-            .backgroundColor(FOCUS_SOFT_COLOR)
+            .fontColor($r('app.color.focus_theme'))
+            .backgroundColor($r('app.color.focus_soft'))
             .borderRadius(24)
             .onClick(() => {
               this.cancel();
@@ -217,8 +208,8 @@ export struct AvatarCropView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor('#FFFFFF')
-            .backgroundColor(FOCUS_THEME_COLOR)
+            .fontColor($r('app.color.on_theme'))
+            .backgroundColor($r('app.color.focus_theme'))
             .borderRadius(24)
             .margin({ left: 12 })
             .enabled(this.canSave())
@@ -231,12 +222,12 @@ export struct AvatarCropView {
       }
       .width('82%')
       .padding(24)
-      .backgroundColor(CARD_BG_COLOR)
+      .backgroundColor($r('app.color.card_bg'))
       .borderRadius(20)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(MASK_COLOR)
+    .backgroundColor($r('app.color.mask'))
     .justifyContent(FlexAlign.Center)
   }
 

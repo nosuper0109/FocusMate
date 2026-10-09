@@ -2,11 +2,6 @@ import { SettingsViewModel } from '../viewmodels/SettingsViewModel';
 import { ReminderTexts } from '../../common/constants/ReminderTexts';
 import { ReminderMoment, ReminderTheme } from '../models/ReminderModels';
 import {
-  BORDER_LIGHT_COLOR,
-  CARD_BG_COLOR,
-  FOCUS_BG_COLOR,
-  FOCUS_SOFT_COLOR,
-  FOCUS_THEME_COLOR,
   MAX_CUSTOM_TEXT_LENGTH,
   REST_MINUTES_OPTIONS,
   SETTINGS_CUSTOM_FINISH_HINT,
@@ -18,9 +13,7 @@ import {
   SETTINGS_SOUND_LABEL,
   SETTINGS_THEME_TITLE,
   SETTINGS_TITLE,
-  SETTINGS_VIBRATE_LABEL,
-  TEXT_PRIMARY_COLOR,
-  TEXT_SECONDARY_COLOR
+  SETTINGS_VIBRATE_LABEL
 } from '../../common/constants/FocusConstants';
 
 /** 可选文案主题列表 */
@@ -55,7 +48,7 @@ export struct SettingsView {
       Row() {
         Text('＜')
           .fontSize(22)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
           .onClick(() => {
             this.onBack();
           })
@@ -63,7 +56,7 @@ export struct SettingsView {
         Text(SETTINGS_TITLE)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
           .margin({ left: 12 })
       }
       .width('100%')
@@ -86,7 +79,7 @@ export struct SettingsView {
     .height('100%')
     // top 56vp：避让元服务右上角系统胶囊
     .padding({ left: 24, right: 24, top: 56, bottom: 32 })
-    .backgroundColor(FOCUS_BG_COLOR)
+    .backgroundColor($r('app.color.focus_bg'))
   }
 
   /** 休息时长：3 / 5 / 10 分钟 */
@@ -95,15 +88,15 @@ export struct SettingsView {
     Column() {
       Text(SETTINGS_REST_TITLE)
         .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .width('100%')
 
       Row({ space: 12 }) {
         ForEach(REST_MINUTES_OPTIONS, (m: number) => {
           Text(`${m} 分钟`)
             .fontSize(15)
-            .fontColor(this.settings.restMinutes === m ? '#FFFFFF' : FOCUS_THEME_COLOR)
-            .backgroundColor(this.settings.restMinutes === m ? FOCUS_THEME_COLOR : FOCUS_SOFT_COLOR)
+            .fontColor(this.settings.restMinutes === m ? $r('app.color.on_theme') : $r('app.color.focus_theme'))
+            .backgroundColor(this.settings.restMinutes === m ? $r('app.color.focus_theme') : $r('app.color.focus_soft'))
             .borderRadius(18)
             .padding({ left: 18, right: 18, top: 8, bottom: 8 })
             .onClick(() => {
@@ -116,7 +109,7 @@ export struct SettingsView {
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
     .margin({ top: 12 })
   }
@@ -127,16 +120,16 @@ export struct SettingsView {
     Column() {
       Text(SETTINGS_REMINDER_TITLE)
         .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .width('100%')
 
       Row() {
         Text(SETTINGS_VIBRATE_LABEL)
           .fontSize(16)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
         Blank()
         Toggle({ type: ToggleType.Switch, isOn: this.settings.vibrateOn })
-          .selectedColor(FOCUS_THEME_COLOR)
+          .selectedColor($r('app.color.focus_theme'))
           .onChange((isOn: boolean): void => {
             this.settings.setVibrateOn(isOn);
           })
@@ -147,10 +140,10 @@ export struct SettingsView {
       Row() {
         Text(SETTINGS_SOUND_LABEL)
           .fontSize(16)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
         Blank()
         Toggle({ type: ToggleType.Switch, isOn: this.settings.soundOn })
-          .selectedColor(FOCUS_THEME_COLOR)
+          .selectedColor($r('app.color.focus_theme'))
           .onChange((isOn: boolean): void => {
             this.settings.setSoundOn(isOn);
           })
@@ -160,7 +153,7 @@ export struct SettingsView {
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
     .margin({ top: 12 })
   }
@@ -171,15 +164,15 @@ export struct SettingsView {
     Column() {
       Text(SETTINGS_THEME_TITLE)
         .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .width('100%')
 
       Flex({ wrap: FlexWrap.Wrap }) {
         ForEach(THEME_LIST, (t: string) => {
           Text(ReminderTexts.themeLabel(t))
             .fontSize(14)
-            .fontColor(this.settings.theme === t ? '#FFFFFF' : FOCUS_THEME_COLOR)
-            .backgroundColor(this.settings.theme === t ? FOCUS_THEME_COLOR : FOCUS_SOFT_COLOR)
+            .fontColor(this.settings.theme === t ? $r('app.color.on_theme') : $r('app.color.focus_theme'))
+            .backgroundColor(this.settings.theme === t ? $r('app.color.focus_theme') : $r('app.color.focus_soft'))
             .borderRadius(16)
             .padding({ left: 14, right: 14, top: 7, bottom: 7 })
             .margin({ right: 10, bottom: 10 })
@@ -193,7 +186,7 @@ export struct SettingsView {
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
     .margin({ top: 12 })
   }
@@ -204,14 +197,14 @@ export struct SettingsView {
     Column() {
       Text(SETTINGS_CUSTOM_TITLE)
         .fontSize(14)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .width('100%')
 
       TextInput({ text: this.draftWarn, placeholder: SETTINGS_CUSTOM_WARN_HINT })
         .maxLength(MAX_CUSTOM_TEXT_LENGTH)
         .height(48)
         .margin({ top: 12 })
-        .backgroundColor(FOCUS_BG_COLOR)
+        .backgroundColor($r('app.color.focus_bg'))
         .borderRadius(12)
         .onChange((value: string): void => {
           this.draftWarn = value;
@@ -224,7 +217,7 @@ export struct SettingsView {
         .maxLength(MAX_CUSTOM_TEXT_LENGTH)
         .height(48)
         .margin({ top: 12 })
-        .backgroundColor(FOCUS_BG_COLOR)
+        .backgroundColor($r('app.color.focus_bg'))
         .borderRadius(12)
         .onChange((value: string): void => {
           this.draftFinish = value;
@@ -237,7 +230,7 @@ export struct SettingsView {
         .maxLength(MAX_CUSTOM_TEXT_LENGTH)
         .height(48)
         .margin({ top: 12 })
-        .backgroundColor(FOCUS_BG_COLOR)
+        .backgroundColor($r('app.color.focus_bg'))
         .borderRadius(12)
         .onChange((value: string): void => {
           this.draftRest = value;
@@ -248,13 +241,13 @@ export struct SettingsView {
 
       Text(`每行最多 ${MAX_CUSTOM_TEXT_LENGTH} 字，留空则使用主题默认文案。`)
         .fontSize(12)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .width('100%')
         .margin({ top: 12 })
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
     .margin({ top: 12 })
   }

@@ -11,20 +11,12 @@ import { SoundService } from '../services/SoundService';
 import { SettingsViewModel } from '../viewmodels/SettingsViewModel';
 import {
   AVATAR_TIMER_PLACEHOLDER,
-  BORDER_LIGHT_COLOR,
   BREATH_MAX_SCALE,
   BREATH_PERIOD_MS,
-  CARD_BG_COLOR,
-  FOCUS_BG_COLOR,
-  FOCUS_SOFT_COLOR,
-  FOCUS_THEME_COLOR,
-  MASK_COLOR,
   SWAY_INTERVAL_MAX_MS,
   SWAY_INTERVAL_MIN_MS,
   SWAY_MAX_DEGREE,
   SWAY_TRANSITION_MS,
-  TEXT_PRIMARY_COLOR,
-  TEXT_SECONDARY_COLOR,
   WARN_BUBBLE_DURATION_MS,
   WARN_SCALE,
   WARN_THRESHOLD_SECONDS
@@ -123,7 +115,7 @@ export struct FocusTimerView {
         CountdownRing({
           remainSeconds: this.vm.remainSeconds,
           totalSeconds: this.vm.totalSeconds,
-          ringColor: FOCUS_THEME_COLOR,
+          ringColor: $r('app.color.focus_theme'),
           statusText: this.vm.status === TimerStatus.PAUSED ? '已暂停' : '专注中'
         })
         Blank()
@@ -133,7 +125,7 @@ export struct FocusTimerView {
       .height('100%')
       // top 56vp：为元服务右上角系统胶囊（••• / ⊖）预留空间
       .padding({ left: 24, right: 24, top: 56, bottom: 32 })
-      .backgroundColor(FOCUS_BG_COLOR)
+      .backgroundColor($r('app.color.focus_bg'))
 
       // 专注自然结束弹层：去休息 / 再来一轮 / 结束
       if (this.vm.focusFinished) {
@@ -184,7 +176,7 @@ export struct FocusTimerView {
       } else {
         Text(AVATAR_TIMER_PLACEHOLDER)
           .fontSize(14)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
       }
 
       // 气泡：从人物方向弹出
@@ -196,10 +188,10 @@ export struct FocusTimerView {
     .width('100%')
     .height(190)
     .borderRadius(20)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .border({
       width: this.glowBorder ? 2 : 1,
-      color: this.glowBorder ? FOCUS_THEME_COLOR : BORDER_LIGHT_COLOR,
+      color: this.glowBorder ? $r('app.color.focus_theme') : $r('app.color.border_light'),
       style: this.glowBorder ? BorderStyle.Solid : BorderStyle.Dashed
     })
     .clip(true)
@@ -220,8 +212,8 @@ export struct FocusTimerView {
         .layoutWeight(1)
         .height(52)
         .fontSize(17)
-        .fontColor(FOCUS_THEME_COLOR)
-        .backgroundColor(CARD_BG_COLOR)
+        .fontColor($r('app.color.focus_theme'))
+        .backgroundColor($r('app.color.card_bg'))
         .borderRadius(26)
         .onClick(() => {
           this.togglePause();
@@ -231,8 +223,8 @@ export struct FocusTimerView {
         .layoutWeight(1)
         .height(52)
         .fontSize(17)
-        .fontColor('#FFFFFF')
-        .backgroundColor(FOCUS_THEME_COLOR)
+        .fontColor($r('app.color.on_theme'))
+        .backgroundColor($r('app.color.focus_theme'))
         .borderRadius(26)
         .margin({ left: 16 })
         .onClick(() => {
@@ -250,10 +242,10 @@ export struct FocusTimerView {
         Text('专注完成')
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
         Text(this.bubbleText.length > 0 ? this.bubbleText : '这一轮专注结束啦，接下来做什么？')
           .fontSize(14)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .textAlign(TextAlign.Center)
           .margin({ top: 8 })
 
@@ -261,8 +253,8 @@ export struct FocusTimerView {
           .width('100%')
           .height(48)
           .fontSize(16)
-          .fontColor('#FFFFFF')
-          .backgroundColor(FOCUS_THEME_COLOR)
+          .fontColor($r('app.color.on_theme'))
+          .backgroundColor($r('app.color.focus_theme'))
           .borderRadius(24)
           .margin({ top: 24 })
           .onClick(() => {
@@ -273,8 +265,8 @@ export struct FocusTimerView {
           .width('100%')
           .height(48)
           .fontSize(16)
-          .fontColor(FOCUS_THEME_COLOR)
-          .backgroundColor(FOCUS_SOFT_COLOR)
+          .fontColor($r('app.color.focus_theme'))
+          .backgroundColor($r('app.color.focus_soft'))
           .borderRadius(24)
           .margin({ top: 12 })
           .onClick(() => {
@@ -286,8 +278,8 @@ export struct FocusTimerView {
           .width('100%')
           .height(48)
           .fontSize(16)
-          .fontColor(TEXT_SECONDARY_COLOR)
-          .backgroundColor('#F5F6F8')
+          .fontColor($r('app.color.text_secondary'))
+          .backgroundColor($r('app.color.input_bg'))
           .borderRadius(24)
           .margin({ top: 12 })
           .onClick(() => {
@@ -296,12 +288,12 @@ export struct FocusTimerView {
       }
       .width('82%')
       .padding(24)
-      .backgroundColor(CARD_BG_COLOR)
+      .backgroundColor($r('app.color.card_bg'))
       .borderRadius(20)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(MASK_COLOR)
+    .backgroundColor($r('app.color.mask'))
     .justifyContent(FlexAlign.Center)
   }
 
@@ -313,15 +305,15 @@ export struct FocusTimerView {
         Text('要丢下 TA 一个人吗？')
           .fontSize(19)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
 
         Row() {
           Button('再坚持一下')
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor(FOCUS_THEME_COLOR)
-            .backgroundColor(FOCUS_SOFT_COLOR)
+            .fontColor($r('app.color.focus_theme'))
+            .backgroundColor($r('app.color.focus_soft'))
             .borderRadius(24)
             .onClick(() => {
               this.showStopConfirm = false;
@@ -331,8 +323,8 @@ export struct FocusTimerView {
             .layoutWeight(1)
             .height(48)
             .fontSize(16)
-            .fontColor('#FFFFFF')
-            .backgroundColor(FOCUS_THEME_COLOR)
+            .fontColor($r('app.color.on_theme'))
+            .backgroundColor($r('app.color.focus_theme'))
             .borderRadius(24)
             .margin({ left: 12 })
             .onClick(() => {
@@ -345,12 +337,12 @@ export struct FocusTimerView {
       }
       .width('82%')
       .padding(24)
-      .backgroundColor(CARD_BG_COLOR)
+      .backgroundColor($r('app.color.card_bg'))
       .borderRadius(20)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(MASK_COLOR)
+    .backgroundColor($r('app.color.mask'))
     .justifyContent(FlexAlign.Center)
   }
 

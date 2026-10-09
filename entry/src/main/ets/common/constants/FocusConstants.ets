@@ -180,43 +180,9 @@ export const LOG_DOMAIN: number = 0x0000;
 /** hilog 标签 */
 export const LOG_TAG: string = 'FocusMate';
 
-// ==================== 视觉主题 ====================
-
-/** 专注主题色（冷蓝） */
-export const FOCUS_THEME_COLOR: string = '#3D7EFF';
-
-/** 专注页背景色 */
-export const FOCUS_BG_COLOR: string = '#F2F6FF';
-
-/** 专注次按钮底色 */
-export const FOCUS_SOFT_COLOR: string = '#EFF4FF';
-
-/** 休息主题色（暖橙） */
-export const REST_THEME_COLOR: string = '#FF9A4D';
-
-/** 休息页背景色 */
-export const REST_BG_COLOR: string = '#FFF5EC';
-
-/** 休息次按钮底色 */
-export const REST_SOFT_COLOR: string = '#FFF1E4';
-
-/** 主要文字颜色 */
-export const TEXT_PRIMARY_COLOR: string = '#1A1A1A';
-
-/** 次要文字颜色 */
-export const TEXT_SECONDARY_COLOR: string = '#8A8A8E';
-
-/** 卡片白底 */
-export const CARD_BG_COLOR: string = '#FFFFFF';
-
-/** 进度环底环颜色 */
-export const PROGRESS_TRACK_COLOR: string = '#E4E9F2';
-
-/** 浅色分割 / 边框颜色 */
-export const BORDER_LIGHT_COLOR: string = '#D8E0EC';
-
-/** 弹层遮罩色 */
-export const MASK_COLOR: string = 'rgba(0, 0, 0, 0.45)';
+// ==================== 视觉主题（M5 深色模式） ====================
+// 颜色已迁移到资源文件 `resources/base|dark/element/color.json`，
+// 页面统一通过 $r('app.color.xxx') 引用，随系统深浅色自动切换。
 // ==================== 服务卡片（M4） ====================
 
 /** 卡片状态文案：待开始 */

@@ -6,17 +6,10 @@ import { formatDuration } from '../../common/utils/TimeUtils';
 import {
   AVATAR_EMPTY_HINT,
   AVATAR_TITLE,
-  CARD_BG_COLOR,
-  FOCUS_BG_COLOR,
-  FOCUS_SOFT_COLOR,
-  FOCUS_THEME_COLOR,
   MAX_FOCUS_MINUTES,
   MIN_FOCUS_MINUTES,
   PRESET_FOCUS_MINUTES,
-  PROGRESS_TRACK_COLOR,
-  SETTINGS_ENTRY,
-  TEXT_PRIMARY_COLOR,
-  TEXT_SECONDARY_COLOR
+  SETTINGS_ENTRY
 } from '../../common/constants/FocusConstants';
 
 /**
@@ -59,7 +52,7 @@ export struct HomeView {
     .width('100%')
     .height('100%')
     .padding({ left: 24, right: 24, top: 56, bottom: 32 })
-    .backgroundColor(FOCUS_BG_COLOR)
+    .backgroundColor($r('app.color.focus_bg'))
   }
 
   /** 顶部标题区：标题 + 设置入口 */
@@ -70,10 +63,10 @@ export struct HomeView {
         Text('陪你专注')
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
         Text('选一个时长，我陪你安静地专注一会儿')
           .fontSize(14)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .margin({ top: 8 })
       }
       .alignItems(HorizontalAlign.Start)
@@ -81,7 +74,7 @@ export struct HomeView {
 
       Text(SETTINGS_ENTRY)
         .fontSize(15)
-        .fontColor(FOCUS_THEME_COLOR)
+        .fontColor($r('app.color.focus_theme'))
         .padding({ left: 12, right: 12, top: 6, bottom: 6 })
         .onClick(() => {
           this.onOpenSettings();
@@ -102,19 +95,19 @@ export struct HomeView {
         Text(this.resumeTitle())
           .fontSize(15)
           .fontWeight(FontWeight.Medium)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
           .width('100%')
         Text(this.resumeSubtitle())
           .fontSize(13)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .margin({ top: 6 })
           .width('100%')
         Button(this.vm.resumeKind === ResumeKind.FINISHED ? '查看结果' : '继续')
           .width('100%')
           .height(44)
           .fontSize(15)
-          .fontColor('#FFFFFF')
-          .backgroundColor(FOCUS_THEME_COLOR)
+          .fontColor($r('app.color.on_theme'))
+          .backgroundColor($r('app.color.focus_theme'))
           .borderRadius(22)
           .margin({ top: 14 })
           .onClick(() => {
@@ -123,7 +116,7 @@ export struct HomeView {
       }
       .width('100%')
       .padding(20)
-      .backgroundColor(CARD_BG_COLOR)
+      .backgroundColor($r('app.color.card_bg'))
       .borderRadius(20)
       .margin({ top: 16 })
     }
@@ -150,7 +143,7 @@ export struct HomeView {
       Text('专注时长')
         .fontSize(16)
         .fontWeight(FontWeight.Medium)
-        .fontColor(TEXT_PRIMARY_COLOR)
+        .fontColor($r('app.color.text_primary'))
         .width('100%')
 
       // 预设时长 chips：等宽均分 + 文字居中，避免末尾胶囊溢出卡片
@@ -160,8 +153,8 @@ export struct HomeView {
             .fontSize(15)
             .maxLines(1)
             .textAlign(TextAlign.Center)
-            .fontColor(this.vm.selectedMinutes === minutes ? '#FFFFFF' : TEXT_PRIMARY_COLOR)
-            .backgroundColor(this.vm.selectedMinutes === minutes ? FOCUS_THEME_COLOR : '#EFF2F7')
+            .fontColor(this.vm.selectedMinutes === minutes ? $r('app.color.on_theme') : $r('app.color.text_primary'))
+            .backgroundColor(this.vm.selectedMinutes === minutes ? $r('app.color.focus_theme') : $r('app.color.chip_bg'))
             .borderRadius(20)
             .padding({ top: 10, bottom: 10 })
             .layoutWeight(1)
@@ -177,11 +170,11 @@ export struct HomeView {
       Row() {
         Text('自定义')
           .fontSize(14)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
         Text(`${this.vm.selectedMinutes} 分钟`)
           .fontSize(14)
           .fontWeight(FontWeight.Medium)
-          .fontColor(FOCUS_THEME_COLOR)
+          .fontColor($r('app.color.focus_theme'))
       }
       .width('100%')
       .justifyContent(FlexAlign.SpaceBetween)
@@ -195,16 +188,16 @@ export struct HomeView {
         style: SliderStyle.OutSet
       })
         .width('100%')
-        .blockColor(FOCUS_THEME_COLOR)
-        .selectedColor(FOCUS_THEME_COLOR)
-        .trackColor(PROGRESS_TRACK_COLOR)
+        .blockColor($r('app.color.focus_theme'))
+        .selectedColor($r('app.color.focus_theme'))
+        .trackColor($r('app.color.progress_track'))
         .onChange((value: number, mode: SliderChangeMode): void => {
           this.vm.selectedMinutes = Math.round(value);
         })
     }
     .width('100%')
     .padding(20)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(20)
     .margin({ top: 24 })
   }
@@ -217,13 +210,13 @@ export struct HomeView {
         Text(AVATAR_TITLE)
           .fontSize(16)
           .fontWeight(FontWeight.Medium)
-          .fontColor(TEXT_PRIMARY_COLOR)
+          .fontColor($r('app.color.text_primary'))
 
         Blank()
 
         Text('管理')
           .fontSize(14)
-          .fontColor(FOCUS_THEME_COLOR)
+          .fontColor($r('app.color.focus_theme'))
           .onClick(() => {
             this.onOpenAvatarManager();
           })
@@ -233,7 +226,7 @@ export struct HomeView {
       if (this.avatarVm.avatars.length === 0) {
         Text(AVATAR_EMPTY_HINT)
           .fontSize(13)
-          .fontColor(TEXT_SECONDARY_COLOR)
+          .fontColor($r('app.color.text_secondary'))
           .margin({ top: 10 })
           .width('100%')
       }
@@ -257,7 +250,7 @@ export struct HomeView {
     .alignItems(HorizontalAlign.Start)
     .width('100%')
     .padding(20)
-    .backgroundColor(CARD_BG_COLOR)
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(20)
     .margin({ top: 16 })
   }
@@ -271,12 +264,12 @@ export struct HomeView {
         .height(56)
         .borderRadius(28)
         .objectFit(ImageFit.Cover)
-        .backgroundColor('#EFF2F7')
-        .border({ width: this.avatarVm.currentId === item.id ? 3 : 0, color: FOCUS_THEME_COLOR })
+        .backgroundColor($r('app.color.chip_bg'))
+        .border({ width: this.avatarVm.currentId === item.id ? 3 : 0, color: $r('app.color.focus_theme') })
 
       Text(item.name)
         .fontSize(12)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .width(64)
@@ -295,16 +288,16 @@ export struct HomeView {
     Column() {
       Text('+')
         .fontSize(28)
-        .fontColor(FOCUS_THEME_COLOR)
+        .fontColor($r('app.color.focus_theme'))
         .width(56)
         .height(56)
         .borderRadius(28)
-        .backgroundColor(FOCUS_SOFT_COLOR)
+        .backgroundColor($r('app.color.focus_soft'))
         .textAlign(TextAlign.Center)
 
       Text('添加')
         .fontSize(12)
-        .fontColor(TEXT_SECONDARY_COLOR)
+        .fontColor($r('app.color.text_secondary'))
         .width(64)
         .textAlign(TextAlign.Center)
         .margin({ top: 6 })
@@ -333,8 +326,8 @@ export struct HomeView {
       .height(56)
       .fontSize(18)
       .fontWeight(FontWeight.Medium)
-      .fontColor('#FFFFFF')
-      .backgroundColor(FOCUS_THEME_COLOR)
+      .fontColor($r('app.color.on_theme'))
+      .backgroundColor($r('app.color.focus_theme'))
       .borderRadius(28)
       .onClick(() => {
         this.onStartFocus(this.vm.selectedMinutes);

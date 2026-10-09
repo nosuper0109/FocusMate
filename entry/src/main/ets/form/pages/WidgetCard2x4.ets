@@ -27,13 +27,13 @@ struct WidgetCard2x4 {
           Text(this.statusText)
             .fontSize(14)
             .fontWeight(FontWeight.Medium)
-            .fontColor('#1A1A1A')
+            .fontColor($r('app.color.text_primary'))
             .maxLines(1)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
           Text(this.timeText)
             .fontSize(22)
             .fontWeight(FontWeight.Bold)
-            .fontColor('#1A1A1A')
+            .fontColor($r('app.color.text_primary'))
             .margin({ top: 4 })
         }
         .alignItems(HorizontalAlign.Start)
@@ -50,7 +50,7 @@ struct WidgetCard2x4 {
 
       Text(this.todayCountText)
         .fontSize(12)
-        .fontColor('#8A8A8E')
+        .fontColor($r('app.color.text_secondary'))
         .margin({ top: 10 })
         .onClick(() => {
           this.launchApp();
@@ -60,8 +60,8 @@ struct WidgetCard2x4 {
         .width('100%')
         .height(36)
         .fontSize(14)
-        .fontColor('#FFFFFF')
-        .backgroundColor('#3D7EFF')
+        .fontColor($r('app.color.on_theme'))
+        .backgroundColor($r('app.color.focus_theme'))
         .borderRadius(18)
         .margin({ top: 12 })
         .onClick(() => {
@@ -72,7 +72,7 @@ struct WidgetCard2x4 {
     .height('100%')
     .justifyContent(FlexAlign.Center)
     .padding(14)
-    .backgroundColor('#FFFFFF')
+    .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
   }
 
@@ -85,17 +85,17 @@ struct WidgetCard2x4 {
         .height(48)
         .borderRadius(24)
         .objectFit(ImageFit.Cover)
-        .backgroundColor('#EFF2F7')
+        .backgroundColor($r('app.color.chip_bg'))
     } else {
       Column() {
         Text('👤')
           .fontSize(22)
-          .fontColor('#9FB0CC')
+          .fontColor($r('app.color.placeholder_fg'))
       }
       .width(48)
       .height(48)
       .borderRadius(24)
-      .backgroundColor('#EFF4FF')
+      .backgroundColor($r('app.color.focus_soft'))
       .justifyContent(FlexAlign.Center)
     }
   }
@@ -108,12 +108,12 @@ struct WidgetCard2x4 {
         .width('100%')
         .height(6)
         .borderRadius(3)
-        .backgroundColor('#E4E9F2')
+        .backgroundColor($r('app.color.progress_track'))
       Column()
         .width(`${this.progressPercent}%`)
         .height(6)
         .borderRadius(3)
-        .backgroundColor('#3D7EFF')
+        .backgroundColor($r('app.color.focus_theme'))
     }
     .width('100%')
     .height(6)
