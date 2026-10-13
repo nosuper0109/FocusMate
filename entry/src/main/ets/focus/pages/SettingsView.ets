@@ -8,6 +8,7 @@ import {
   SETTINGS_CUSTOM_REST_HINT,
   SETTINGS_CUSTOM_TITLE,
   SETTINGS_CUSTOM_WARN_HINT,
+  SETTINGS_PRIVACY_LABEL,
   SETTINGS_REMINDER_TITLE,
   SETTINGS_REST_TITLE,
   SETTINGS_SOUND_LABEL,
@@ -36,6 +37,9 @@ export struct SettingsView {
 
   /** 返回回调 */
   @Event onBack: () => void = (): void => {};
+
+  /** 打开隐私政策页回调 */
+  @Event onOpenPrivacy: () => void = (): void => {};
 
   aboutToAppear(): void {
     this.draftWarn = this.settings.customWarn;
@@ -67,6 +71,7 @@ export struct SettingsView {
           this.reminderSection()
           this.themeSection()
           this.customSection()
+          this.privacySection()
         }
         .width('100%')
       }
@@ -250,5 +255,29 @@ export struct SettingsView {
     .backgroundColor($r('app.color.card_bg'))
     .borderRadius(16)
     .margin({ top: 12 })
+  }
+
+  /** 隐私政策入口：点击进入应用内隐私政策页（纯本地静态内容） */
+  @Builder
+  privacySection() {
+    Row() {
+      Text(SETTINGS_PRIVACY_LABEL)
+        .fontSize(16)
+        .fontColor($r('app.color.text_primary'))
+
+      Blank()
+
+      Text('＞')
+        .fontSize(16)
+        .fontColor($r('app.color.text_secondary'))
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor($r('app.color.card_bg'))
+    .borderRadius(16)
+    .margin({ top: 12 })
+    .onClick(() => {
+      this.onOpenPrivacy();
+    })
   }
 }

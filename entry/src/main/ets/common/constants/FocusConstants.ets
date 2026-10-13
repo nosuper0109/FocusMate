@@ -43,6 +43,9 @@ export const ROUTE_AVATAR_CROP: string = 'AvatarCrop';
 /** 路由名：设置页（P6） */
 export const ROUTE_SETTINGS: string = 'Settings';
 
+/** 路由名：隐私政策页 */
+export const ROUTE_PRIVACY: string = 'PrivacyPolicy';
+
 // ==================== 陪伴人物相关（M2） ====================
 
 /** 陪伴人物数量上限 */
@@ -171,6 +174,14 @@ export const SETTINGS_CUSTOM_FINISH_HINT: string = '专注结束的提醒（留�
 
 /** 自定义文案占位：休息结束 */
 export const SETTINGS_CUSTOM_REST_HINT: string = '休息结束的提醒（留空用默认）';
+
+// ==================== 隐私政策（P7） ====================
+
+/** 设置页「隐私政策」入口文案 */
+export const SETTINGS_PRIVACY_LABEL: string = '隐私政策';
+
+/** 隐私政策页标题 */
+export const PRIVACY_TITLE: string = '隐私政策';
 
 // ==================== 日志相关 ====================
 

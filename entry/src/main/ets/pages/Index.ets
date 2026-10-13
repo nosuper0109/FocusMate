@@ -10,11 +10,13 @@ import { RestView } from '../focus/pages/RestView';
 import { AvatarManagerView } from '../focus/pages/AvatarManagerView';
 import { AvatarCropView } from '../focus/pages/AvatarCropView';
 import { SettingsView } from '../focus/pages/SettingsView';
+import { PrivacyPolicyView } from '../focus/pages/PrivacyPolicyView';
 import {
   AVATAR_LIMIT_HINT,
   ROUTE_AVATAR_CROP,
   ROUTE_AVATAR_MANAGER,
   ROUTE_FOCUS_TIMER,
+  ROUTE_PRIVACY,
   ROUTE_REST,
   ROUTE_SETTINGS
 } from '../common/constants/FocusConstants';
@@ -155,6 +157,15 @@ struct Index {
         })
       } else if (name === ROUTE_SETTINGS) {
         SettingsView({
+          onBack: (): void => {
+            this.pathStack.pop();
+          },
+          onOpenPrivacy: (): void => {
+            this.pathStack.pushPathByName(ROUTE_PRIVACY, '');
+          }
+        })
+      } else if (name === ROUTE_PRIVACY) {
+        PrivacyPolicyView({
           onBack: (): void => {
             this.pathStack.pop();
           }
