@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>陪你专注 FocusMate 隐私政策</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --text-sub: #666666;
+    --accent: #3d7eff;
+    --border: #ececf0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --card: #1e2026;
+      --text: #f2f2f2;
+      --text-sub: #a0a0a0;
+      --accent: #5b92ff;
+      --border: #2a2d34;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+    line-height: 1.75;
+    font-size: 15px;
+    padding: 32px 16px 64px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+  .meta {
+    color: var(--text-sub);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .meta span { display: inline-block; margin-right: 16px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-top: 14px;
+  }
+  h2 {
+    font-size: 16px;
+    margin: 0 0 10px;
+    color: var(--accent);
+  }
+  p { margin: 0 0 10px; }
+  p:last-child { margin-bottom: 0; }
+  ul { margin: 0 0 10px; padding-left: 20px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); word-break: break-all; }
+  .foot { color: var(--text-sub); font-size: 12px; margin-top: 28px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>陪你专注 FocusMate 隐私政策</h1>
+  <div class="meta">
+    <span>更新日期：2026 年 10 月 12 日</span>
+    <span>生效日期：2026 年 10 月 15 日</span>
+  </div>
+
+  <div class="card">
+    <p>感谢你使用「陪你专注 FocusMate」（以下简称“本服务”）。我们非常重视你的隐私和个人信息保护。本隐私政策旨在向你说明：在你使用本服务的过程中，我们如何收集、使用、存储和保护你的信息，以及你享有的权利。</p>
+    <p>使用本服务即表示你已阅读并同意本隐私政策。如你不同意本政策，请停止使用本服务。</p>
+  </div>
+
+  <div class="card">
+    <h2>一、我们收集与处理的信息</h2>
+    <p>本服务是一款<strong>本地专注计时工具</strong>，具有以下特点：</p>
+    <ul>
+      <li><strong>无需注册或登录</strong>，我们没有账号体系；</li>
+      <li><strong>不收集可识别个人身份的信息</strong>，不采集通讯录、位置、设备标识等信息；</li>
+      <li><strong>无后端服务器</strong>，你的数据不会上传至我们或任何第三方的服务器。</li>
+    </ul>
+    <p>本服务涉及的信息处理仅限于你在使用过程中主动提供的以下内容：</p>
+    <ul>
+      <li><strong>陪伴照片</strong>：仅存储在你的设备本地，用于在计时、休息、桌面卡片等界面展示你选择的陪伴形象。</li>
+      <li><strong>人物名称、设置项</strong>：仅存储在你的设备本地，用于保存陪伴人物与休息时长、提醒方式、文案主题等偏好。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>二、我们如何处理你的照片</h2>
+    <ul>
+      <li>你为陪伴人物选择的照片，<strong>仅在本设备本地存储与处理，不会上传到任何服务器</strong>。</li>
+      <li>当前版本没有后端服务，照片只保存在本应用的私有存储空间（沙箱目录）中，用于在专注计时、休息与桌面卡片等界面展示陪伴形象。</li>
+      <li>我们不会将你的照片用于识别、分析、训练或任何超出上述展示用途的目的。</li>
+      <li>选择照片时，我们通过系统图库选择器（PhotoViewPicker）由系统完成选图，<strong>本应用不申请相册/存储权限</strong>，也不会读取你未选择的照片。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>三、权限使用说明</h2>
+    <p>为向你提供完整的功能体验，本服务可能申请以下权限：</p>
+    <ul>
+      <li><strong>振动（ohos.permission.VIBRATE）</strong>：用于专注倒计时结束、需要提醒你时提供振动反馈。该权限仅在提醒触发时使用。</li>
+      <li><strong>发布代理提醒（ohos.permission.PUBLISH_AGENT_REMINDER）</strong>（如未来版本提供）：用于在专注或休息倒计时结束时，通过系统能力提醒你时间已到。当前版本到点提醒主要在应用内呈现。</li>
+    </ul>
+    <p>你可以在系统设置中随时查看或关闭上述权限。关闭后，对应提醒方式将不可用，但不影响专注计时等核心功能。</p>
+  </div>
+
+  <div class="card">
+    <h2>四、信息的存储与删除</h2>
+    <ul>
+      <li><strong>存储位置</strong>：本服务的所有数据（照片、人物名称、设置项）均保存在你的设备本地，不会离开你的设备。</li>
+      <li><strong>删除人物</strong>：当你删除某个人物时，该人物对应的照片文件会被一并删除，不会残留。</li>
+      <li><strong>卸载应用</strong>：卸载本服务将清除本应用在本设备上的全部数据。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>五、信息共享与第三方</h2>
+    <ul>
+      <li>我们<strong>不会</strong>向任何第三方出售、出租、共享或转让你的信息。</li>
+      <li>本服务不包含广告 SDK，不进行用户行为追踪。</li>
+      <li>本服务不提供照片分享或公开发布功能，你的照片不会被公开或分享给他人。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>六、未成年人保护</h2>
+    <p>本服务适用于一般用户，功能不面向儿童专门设计。若你是未成年人，请在监护人指导下使用本服务。我们不会主动收集未成年人的个人信息。</p>
+  </div>
+
+  <div class="card">
+    <h2>七、政策更新</h2>
+    <p>我们可能会不时更新本隐私政策。如本政策发生变更，我们会在应用内更新并向你提示。更新后的政策自公布之日起生效。建议你定期查看本政策以了解最新内容。</p>
+  </div>
+
+  <div class="card">
+    <h2>八、联系我们</h2>
+    <p>如果你对本隐私政策或你的个人信息保护有任何疑问、意见或建议，欢迎通过以下方式与我们联系：</p>
+    <ul>
+      <li><strong>联系邮箱：</strong><a href="mailto:nosuper0109@gmail.com">nosuper0109@gmail.com</a></li>
+    </ul>
+    <p>我们会在收到你的反馈后尽快与你联系并处理。</p>
+  </div>
+
+  <div class="foot">本隐私政策的最终解释权归本服务开发者所有。</div>
+</div>
+</body>
+</html>
